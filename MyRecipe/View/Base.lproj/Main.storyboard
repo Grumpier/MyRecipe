@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="ipad10_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MyRecipe" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="1180" height="820"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fea-11-170" userLabel="Menu View">
+                                <rect key="frame" x="0.0" y="100" width="1180" height="120"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="X1M-yT-0ZZ">
+                                        <rect key="frame" x="398" y="10" width="384" height="47"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Usy-r4-ZKX">
+                                                <rect key="frame" x="0.0" y="0.0" width="93.5" height="47"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="35"/>
+                                                <state key="normal" title="Total">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGZ-df-VTv">
+                                                <rect key="frame" x="101.5" y="0.0" width="100.5" height="47"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="35"/>
+                                                <state key="normal" title="Flour">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HLA-6p-dBk">
+                                                <rect key="frame" x="210" y="0.0" width="174" height="47"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="35"/>
+                                                <state key="normal" title="Hydration">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="SAA-bh-1Ll">
+                                        <rect key="frame" x="275" y="67" width="630" height="42"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qH5-uM-syl">
+                                                <rect key="frame" x="0.0" y="0.0" width="165" height="42"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="30"/>
+                                                <state key="normal" title="From Yeast">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ZH-cA-ss1">
+                                                <rect key="frame" x="185" y="0.0" width="167" height="42"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="30"/>
+                                                <state key="normal" title="Tangzhong">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avx-1N-ANl">
+                                                <rect key="frame" x="372" y="0.0" width="167" height="42"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="30"/>
+                                                <state key="normal" title="Inoculation">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RwE-wt-IlL">
+                                                <rect key="frame" x="559" y="0.0" width="71" height="42"/>
+                                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="30"/>
+                                                <state key="normal" title="Print">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="54P-e8-m12"/>
+                                    <constraint firstItem="X1M-yT-0ZZ" firstAttribute="top" secondItem="Fea-11-170" secondAttribute="top" constant="10" id="Bie-nh-mPe"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SAA-bh-1Ll" secondAttribute="trailing" id="GTz-7D-EbQ"/>
+                                    <constraint firstItem="SAA-bh-1Ll" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Fea-11-170" secondAttribute="leading" id="GhW-Rb-ngc"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="X1M-yT-0ZZ" secondAttribute="trailing" id="cWn-e8-daY"/>
+                                    <constraint firstItem="SAA-bh-1Ll" firstAttribute="top" secondItem="X1M-yT-0ZZ" secondAttribute="bottom" constant="10" id="jxB-xR-5K3"/>
+                                    <constraint firstItem="X1M-yT-0ZZ" firstAttribute="centerX" secondItem="Fea-11-170" secondAttribute="centerX" id="riB-Ll-iNg"/>
+                                    <constraint firstItem="X1M-yT-0ZZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Fea-11-170" secondAttribute="leading" id="tNy-tk-hI4"/>
+                                    <constraint firstItem="SAA-bh-1Ll" firstAttribute="centerX" secondItem="Fea-11-170" secondAttribute="centerX" id="vtB-om-Lf2"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xgs-S3-5MZ" userLabel="Top View">
+                                <rect key="frame" x="0.0" y="0.0" width="1180" height="100"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3CK-qj-yFp">
+                                        <rect key="frame" x="50" y="20" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="hdG-aN-i1X"/>
+                                            <constraint firstAttribute="height" constant="60" id="och-u9-O5A"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="plus" catalog="system">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30" scale="large" weight="regular"/>
+                                        </state>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bread Calculator" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="6Yc-qz-kO9">
+                                        <rect key="frame" x="381" y="25" width="418.5" height="50"/>
+                                        <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="50"/>
+                                        <color key="textColor" name="Color"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xk-dg-w2L">
+                                        <rect key="frame" x="1070" y="20" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="EW5-Rr-jVl"/>
+                                            <constraint firstAttribute="width" constant="60" id="TP9-EQ-mkh"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="magnifyingglass" catalog="system">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30" scale="large" weight="regular"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.66659259800000004" green="0.66670930390000005" blue="0.66658520700000001" alpha="0.58808234280000005" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="0xk-dg-w2L" firstAttribute="top" secondItem="Xgs-S3-5MZ" secondAttribute="top" constant="20" id="CNb-zJ-cN2"/>
+                                    <constraint firstItem="3CK-qj-yFp" firstAttribute="leading" secondItem="Xgs-S3-5MZ" secondAttribute="leading" constant="50" id="KZL-xd-xOA"/>
+                                    <constraint firstAttribute="trailing" secondItem="0xk-dg-w2L" secondAttribute="trailing" constant="50" id="QEa-ZW-d9W"/>
+                                    <constraint firstItem="3CK-qj-yFp" firstAttribute="top" secondItem="Xgs-S3-5MZ" secondAttribute="top" constant="20" id="STb-KH-r6j"/>
+                                    <constraint firstAttribute="height" constant="100" id="Syx-mD-f0Z"/>
+                                    <constraint firstItem="6Yc-qz-kO9" firstAttribute="centerY" secondItem="Xgs-S3-5MZ" secondAttribute="centerY" id="bOn-Ha-2NY"/>
+                                    <constraint firstItem="6Yc-qz-kO9" firstAttribute="centerX" secondItem="Xgs-S3-5MZ" secondAttribute="centerX" id="cCX-mW-3bL"/>
+                                </constraints>
+                            </view>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FLi-q3-zXn">
+                                <rect key="frame" x="70" y="230" width="300" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="8ST-Ol-AGq"/>
+                                    <constraint firstAttribute="width" secondItem="FLi-q3-zXn" secondAttribute="height" multiplier="141:17" id="gCt-75-M37"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NyS-lN-gcI">
+                                <rect key="frame" x="70" y="280" width="400" height="470"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="400" id="lRK-WW-0sh"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeItem" id="Gbm-sW-9aH" customClass="recipeCell" customModule="MyRecipe" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="400" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gbm-sW-9aH" id="KMg-aI-dbT">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredient" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7C7-MN-7bj">
+                                                    <rect key="frame" x="10" y="10" width="88.5" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Measure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dU1-Xu-Bxu">
+                                                    <rect key="frame" x="300" y="10" width="76" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="7C7-MN-7bj" firstAttribute="leading" secondItem="KMg-aI-dbT" secondAttribute="leading" constant="10" id="Mac-js-q68"/>
+                                                <constraint firstItem="7C7-MN-7bj" firstAttribute="centerY" secondItem="KMg-aI-dbT" secondAttribute="centerY" id="T1i-gv-2iA"/>
+                                                <constraint firstItem="dU1-Xu-Bxu" firstAttribute="centerY" secondItem="KMg-aI-dbT" secondAttribute="centerY" id="clW-XZ-0jk"/>
+                                                <constraint firstItem="dU1-Xu-Bxu" firstAttribute="leading" secondItem="KMg-aI-dbT" secondAttribute="leading" constant="300" id="rY7-E2-Pvs"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="ingredient" destination="7C7-MN-7bj" id="NPQ-Hz-faD"/>
+                                            <outlet property="measure" destination="dU1-Xu-Bxu" id="ULg-ah-6Qr"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.91496151685714722" green="0.70565164089202881" blue="0.30058428645133972" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="NyS-lN-gcI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="70" id="3kX-vZ-3iY"/>
+                            <constraint firstItem="Fea-11-170" firstAttribute="top" secondItem="Xgs-S3-5MZ" secondAttribute="bottom" id="4uf-aE-cm9"/>
+                            <constraint firstItem="Xgs-S3-5MZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="J1l-mX-wh3"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="NyS-lN-gcI" secondAttribute="bottom" constant="50" id="O0J-7Z-vFY"/>
+                            <constraint firstItem="Xgs-S3-5MZ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="PyW-A3-BKX"/>
+                            <constraint firstItem="Fea-11-170" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="S0y-uN-fsS"/>
+                            <constraint firstItem="Fea-11-170" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gaC-ub-rgG"/>
+                            <constraint firstItem="FLi-q3-zXn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="70" id="plO-vc-zT2"/>
+                            <constraint firstItem="FLi-q3-zXn" firstAttribute="top" secondItem="Xgs-S3-5MZ" secondAttribute="bottom" constant="130" id="s8x-vC-RLN"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Xgs-S3-5MZ" secondAttribute="trailing" id="sjB-Td-3BT"/>
+                            <constraint firstItem="FLi-q3-zXn" firstAttribute="top" secondItem="NyS-lN-gcI" secondAttribute="top" constant="-50" id="uyf-gF-uvv"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="NyS-lN-gcI" id="s7V-F5-DZO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="138.81355932203391" y="71.707317073170728"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <namedColor name="Color">
+            <color red="0.70045293330000002" green="0.51437169309999997" blue="0.2302598357" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

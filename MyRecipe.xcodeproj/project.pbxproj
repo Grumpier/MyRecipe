@@ -13,6 +13,11 @@
 		740FFD6525BD9D0800A23384 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740FFD6325BD9D0800A23384 /* Main.storyboard */; };
 		740FFD6725BD9D0E00A23384 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 740FFD6625BD9D0E00A23384 /* Assets.xcassets */; };
 		740FFD6A25BD9D0E00A23384 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740FFD6825BD9D0E00A23384 /* LaunchScreen.storyboard */; };
+		740FFD7925BD9E1000A23384 /* RecipeBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7825BD9E1000A23384 /* RecipeBrain.swift */; };
+		740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7C25BD9E2200A23384 /* Recipe.swift */; };
+		740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7F25BD9E6800A23384 /* Ingredient.swift */; };
+		740FFD8725BDBAD500A23384 /* IngredientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD8625BDBAD500A23384 /* IngredientType.swift */; };
+		74E3A67325CC63090008CCCA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E3A67225CC63080008CCCA /* FileManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		740FFD6625BD9D0E00A23384 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		740FFD6925BD9D0E00A23384 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		740FFD6B25BD9D0E00A23384 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		740FFD7825BD9E1000A23384 /* RecipeBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBrain.swift; sourceTree = "<group>"; };
+		740FFD7C25BD9E2200A23384 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		740FFD7F25BD9E6800A23384 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		740FFD8625BDBAD500A23384 /* IngredientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientType.swift; sourceTree = "<group>"; };
+		74E3A67225CC63080008CCCA /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,13 +68,58 @@
 			children = (
 				740FFD5D25BD9D0800A23384 /* AppDelegate.swift */,
 				740FFD5F25BD9D0800A23384 /* SceneDelegate.swift */,
-				740FFD6125BD9D0800A23384 /* ViewController.swift */,
-				740FFD6325BD9D0800A23384 /* Main.storyboard */,
+				74E3A67025CC623A0008CCCA /* Sources */,
+				740FFD7725BD9DC600A23384 /* Model */,
+				740FFD7625BD9DBA00A23384 /* Controllers */,
+				740FFD7425BD9DAE00A23384 /* View */,
 				740FFD6625BD9D0E00A23384 /* Assets.xcassets */,
 				740FFD6825BD9D0E00A23384 /* LaunchScreen.storyboard */,
 				740FFD6B25BD9D0E00A23384 /* Info.plist */,
 			);
 			path = MyRecipe;
+			sourceTree = "<group>";
+		};
+		740FFD7425BD9DAE00A23384 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				740FFD6325BD9D0800A23384 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		740FFD7625BD9DBA00A23384 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				740FFD6125BD9D0800A23384 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		740FFD7725BD9DC600A23384 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				740FFD7825BD9E1000A23384 /* RecipeBrain.swift */,
+				740FFD7C25BD9E2200A23384 /* Recipe.swift */,
+				740FFD7F25BD9E6800A23384 /* Ingredient.swift */,
+				740FFD8625BDBAD500A23384 /* IngredientType.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		74E3A67025CC623A0008CCCA /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				74E3A67125CC62C60008CCCA /* Extensions */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		74E3A67125CC62C60008CCCA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				74E3A67225CC63080008CCCA /* FileManager.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,9 +192,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */,
+				740FFD7925BD9E1000A23384 /* RecipeBrain.swift in Sources */,
 				740FFD6225BD9D0800A23384 /* ViewController.swift in Sources */,
+				740FFD8725BDBAD500A23384 /* IngredientType.swift in Sources */,
 				740FFD5E25BD9D0800A23384 /* AppDelegate.swift in Sources */,
+				740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */,
 				740FFD6025BD9D0800A23384 /* SceneDelegate.swift in Sources */,
+				74E3A67325CC63090008CCCA /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +349,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TSBJ6LG6DH;
 				INFOPLIST_FILE = MyRecipe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -296,7 +357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LonelyMountain.MyRecipe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -308,6 +369,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TSBJ6LG6DH;
 				INFOPLIST_FILE = MyRecipe/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,7 +377,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LonelyMountain.MyRecipe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
