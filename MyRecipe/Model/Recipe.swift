@@ -7,8 +7,30 @@
 
 import Foundation
 
-struct Recipe {
+struct Recipe: Codable {
     var name: String
-    var ingredientList: [(Ingredient, Measurement<Unit>)]
+    var measure: Measurement<Unit>
+    var ingredientList: [RecipeLine]
+    
+    init(name: String, measure: Measurement<Unit>, ingredientList: [RecipeLine]) {
+        self.name = name
+        self.measure = measure
+        self.ingredientList = ingredientList
+    }
     
 }
+
+struct RecipeLine: Codable {
+    var ingredient: Ingredient
+    var measure: Measurement<Unit>
+    
+    init(ingredient: Ingredient, measure: Measurement<Unit>) {
+        self.ingredient = ingredient
+        self.measure = measure
+    }
+    
+}
+
+
+    
+    

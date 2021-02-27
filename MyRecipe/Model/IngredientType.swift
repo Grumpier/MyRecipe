@@ -7,10 +7,14 @@
 
 import Foundation
 
-enum IngredientType {
+enum IngredientType: String, Codable {
     case Flour
     case Fluid
     case Starter
     case Salt
     case Yeast
+    case None
 }
+
+
+

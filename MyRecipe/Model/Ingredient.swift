@@ -7,7 +7,18 @@
 
 import Foundation
 
-struct Ingredient {
+struct Ingredient: Codable {
     let name: String
     let type: IngredientType
+    
+    init(name: String, type: IngredientType) {
+        self.name = name
+        self.type = type
+    }
+    
+    static func components() -> Int {
+        return 2
+    }
+    
 }
+

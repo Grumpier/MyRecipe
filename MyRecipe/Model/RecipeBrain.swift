@@ -5,24 +5,23 @@
 //  Created by Steven Manus on 24/01/21.
 //
 
-import Foundation
+import Foundation   
 
-struct RecipeBrain {
-    var ingredients: [Ingredient]
-    var recipeList: [Recipe]
+class RecipeBrain {
+    // Directories for storing data objects
+    static let recipePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Recipes.plist")
+    static let ingredientPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Ingredients.plist")
+
+
     
-    static func setIngredient(ingredient: Ingredient) {
+    
+    static func writeRecipes() {
         
         
     }
     
-    func writeRecipes() {
-        
-        
-    }
     
-    
-    func readRecipes(){
+    static func readRecipes(){
         
         
     }

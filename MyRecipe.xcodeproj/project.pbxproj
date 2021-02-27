@@ -18,6 +18,7 @@
 		740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7F25BD9E6800A23384 /* Ingredient.swift */; };
 		740FFD8725BDBAD500A23384 /* IngredientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD8625BDBAD500A23384 /* IngredientType.swift */; };
 		74E3A67325CC63090008CCCA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E3A67225CC63080008CCCA /* FileManager.swift */; };
+		74F0961B25E8007B007BD4E7 /* RecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F0961A25E8007B007BD4E7 /* RecipesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		740FFD7F25BD9E6800A23384 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		740FFD8625BDBAD500A23384 /* IngredientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientType.swift; sourceTree = "<group>"; };
 		74E3A67225CC63080008CCCA /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		74F0961A25E8007B007BD4E7 /* RecipesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				740FFD6125BD9D0800A23384 /* ViewController.swift */,
+				74F0961A25E8007B007BD4E7 /* RecipesViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				740FFD5E25BD9D0800A23384 /* AppDelegate.swift in Sources */,
 				740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */,
 				740FFD6025BD9D0800A23384 /* SceneDelegate.swift in Sources */,
+				74F0961B25E8007B007BD4E7 /* RecipesViewController.swift in Sources */,
 				74E3A67325CC63090008CCCA /* FileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
