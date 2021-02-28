@@ -15,10 +15,6 @@ struct Ingredient: Codable {
         self.name = name
         self.type = type
     }
-    
-    static func components() -> Int {
-        return 2
-    }
-    
+        
 }
 

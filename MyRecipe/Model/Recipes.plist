@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>White Bread</string>
+		<key>measure</key>
+		<dict>
+			<key>value</key>
+			<integer>1000</integer>
+			<key>unit</key>
+			<string>UnitMass.grams</string>
+		</dict>
+		<key>ingredientList</key>
+		<dict>
+			<key>ingredient</key>
+			<string>White Flour</string>
+			<key>measure</key>
+			<dict>
+				<key>value</key>
+				<integer>1000</integer>
+				<key>unit</key>
+				<string>UnitMass.grams</string>
+			</dict>
+		</dict>
+	</dict>
+</array>
+</plist>
