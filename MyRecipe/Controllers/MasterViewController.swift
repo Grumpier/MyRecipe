@@ -18,7 +18,7 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
 
-    private lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
+    lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
 
     @IBOutlet weak var recipeName: UITextField!
     weak var delegate: RecipeUpdateDelegate?
@@ -33,17 +33,17 @@ class MasterViewController: UIViewController {
         super.viewDidLoad()
         addContentController(ingredientListTableViewController, to: leftScreenStack)
         // temp solution to push recipe to ingredientlistdatasource
-        delegate = ingredientListTableViewController
+        ingredientListTableViewController.didChangeRecipe(recipe)
         
 
         // assign the current controller as the delegate of the ingredient list child controller - needed to get the ingredient selections from that tableview
-        ingredientListTableViewController.delegate = self
+//        ingredientListTableViewController.delegate = self
 
         // Place recipe name into label
         recipeName.text = recipe.name
         
         // update the delegates with the current recipe selected
-        delegate?.didChangeRecipe(recipe)
+//        delegate?.didChangeRecipe(recipe)
     }
     
 //    override func viewWillLayoutSubviews() {

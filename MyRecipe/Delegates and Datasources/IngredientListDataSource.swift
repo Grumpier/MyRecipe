@@ -7,12 +7,18 @@
 
 import UIKit
 
+class recipeCell: UITableViewCell {
+        @IBOutlet weak var ingredient: UILabel!
+        @IBOutlet weak var measure: UILabel!
+}
+
+
 class IngredientListDataSource: NSObject, RecipeUpdateDelegate {
 
     private let tableView: UITableView
 
-    var recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UnitMass.grams), ingredientList: [])
-
+    var recipe = Recipe(name: "Test", measure: Measurement<Unit>(value: 0, unit: UnitMass.grams), ingredientList: [RecipeLine(ingredient: Ingredient(name: "Test", type: .Flour), measure: Measurement<Unit>(value: 0, unit: UnitMass.grams))])
+    
     init(tableView: UITableView) {
         self.tableView = tableView
         super.init()
@@ -43,10 +49,12 @@ extension IngredientListDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let line = recipe.ingredientList[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientListCell", for: indexPath) as! IngredientListTableViewCell
-        cell.ingredient.text = line.ingredient.name
-        cell.measure.text = String(format: "%.1f", line.measure.value) + "\(line.measure.unit.symbol)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "recipeItem", for: indexPath) as! recipeCell
+        print(cell.ingredient)
+        print(cell.measure)
+        print(recipe.ingredientList[indexPath.row].ingredient.name)
+        cell.ingredient.text! = recipe.ingredientList[indexPath.row].ingredient.name
+        cell.measure.text = String(format: "%.1f", recipe.ingredientList[indexPath.row].measure.value) + "\(recipe.ingredientList[indexPath.row].measure.unit.symbol)"
         return cell
     }
 
