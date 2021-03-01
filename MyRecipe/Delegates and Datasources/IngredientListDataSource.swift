@@ -43,16 +43,18 @@ extension IngredientListDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: IngredientListTableViewCell.reuseIdentifier, for: indexPath)
-        configure(cell: cell, indexPath: indexPath)
+        let line = recipe.ingredientList[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientListCell", for: indexPath) as! IngredientListTableViewCell
+        cell.ingredient.text = line.ingredient.name
+        cell.measure.text = String(format: "%.1f", line.measure.value) + "\(line.measure.unit.symbol)"
         return cell
     }
 
-    private func configure(cell: UITableViewCell, indexPath: IndexPath) {
-        if let cell = cell as? IngredientListTableViewCell {
-            let object = recipe.ingredientList[indexPath.row]
-            cell.configure(object: object)
-        }
-    }
+//    private func configure(cell: UITableViewCell, indexPath: IndexPath) {
+//        if let cell = cell as? IngredientListTableViewCell {
+//            let object = recipe.ingredientList[indexPath.row]
+//            cell.configure(object: object)
+//        }
+//    }
 }
 
