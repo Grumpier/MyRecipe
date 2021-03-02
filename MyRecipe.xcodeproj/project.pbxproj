@@ -26,6 +26,7 @@
 		744CAB9C25EBF82B005DA757 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */; };
 		744CABA125EC0347005DA757 /* AddIngredientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CABA025EC0347005DA757 /* AddIngredientController.swift */; };
 		74E3A67325CC63090008CCCA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E3A67225CC63080008CCCA /* FileManager.swift */; };
+		74E52CD125EE579900FEE0D1 /* RecipeLineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
 		744CABA025EC0347005DA757 /* AddIngredientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientController.swift; sourceTree = "<group>"; };
 		74E3A67225CC63080008CCCA /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLineController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		740FFD7625BD9DBA00A23384 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */,
 				744CAB8325EBD68D005DA757 /* IngredientListTableViewController.swift */,
 				740FFD6125BD9D0800A23384 /* MasterViewController.swift */,
 				744CABA025EC0347005DA757 /* AddIngredientController.swift */,
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74E52CD125EE579900FEE0D1 /* RecipeLineController.swift in Sources */,
 				744CABA125EC0347005DA757 /* AddIngredientController.swift in Sources */,
 				744CAB8425EBD68D005DA757 /* IngredientListTableViewController.swift in Sources */,
 				740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */,

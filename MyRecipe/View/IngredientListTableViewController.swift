@@ -8,7 +8,8 @@
 import UIKit
 
 protocol IngredientProviderDelegate: AnyObject {
-    func didSelectLocation(_ ingredient: Ingredient)
+    func didSelectRecipeLine(_ recipeLine: RecipeLine)
+    func wantsToAddRecipeLine()
 }
 
 class IngredientListTableViewController: UITableViewController {
@@ -26,6 +27,21 @@ class IngredientListTableViewController: UITableViewController {
         ingredientListDataSource = IngredientListDataSource(tableView: tableView)
     }
     
+    // checks the location of the selected row and sends it to any of its delegates
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let recipeLine = ingredientListDataSource?.recipeLineAtIndexPath(indexPath) {
+            delegate?.didSelectRecipeLine(recipeLine)
+        }
+    }
+
+    
+    @IBAction func addIngredientPressed(_ sender: UIButton) {
+        print("button pressed")
+        delegate?.wantsToAddRecipeLine()
+    }
+
+    @IBAction func addSectionPressed(_ sender: UIButton) {
+    }
 }
 
     

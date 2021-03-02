@@ -23,9 +23,10 @@ class IngredientListDataSource: NSObject, GetRecipeUpdates {
         tableView.reloadData()
     }
 
-//    func ingredientAtIndexPath(_ indexPath: IndexPath) -> Ingredient? {
-//        return indexPath.row < locations.count ? locations[indexPath.row] : nil
-//    }
+    // returns the recipe line at the specified index path
+    func recipeLineAtIndexPath(_ indexPath: IndexPath) -> RecipeLine? {
+        return indexPath.row < recipe.ingredientList.count ? recipe.ingredientList[indexPath.row] : nil
+    }
 
     // called as a delegate from the RecipeUpdateDelegate protocol
     func didChangeRecipe(_ recipe: Recipe) {

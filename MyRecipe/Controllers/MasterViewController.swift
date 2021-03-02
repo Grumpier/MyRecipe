@@ -13,21 +13,24 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var fullScreenStack: UIStackView!
     @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
-
+    @IBOutlet weak var leftStackOverlay: UIStackView!
+    
     lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
+    lazy var recipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
 
     @IBOutlet weak var recipeName: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addContentController(ingredientListTableViewController, to: leftScreenStack)
+        addContentController(recipeLineController, to: leftStackOverlay)
 
         // instantiate RecipeBrain and force broadcast
         let recipeBrain = RecipeBrain.singleton
         recipeBrain.broadcastRecipe()
 
-        // assign the current controller as the delegate of the ingredient list child controller - needed to get the ingredient selections from that tableview
-//        ingredientListTableViewController.delegate = self
+        // assign the current controller as the delegate of the ingredient list child controller
+        ingredientListTableViewController.delegate = self
 
         // Place recipe name into label
         recipeName.text = recipeBrain.getRecipeName()
@@ -102,7 +105,17 @@ class MasterViewController: UIViewController {
 
  // MARK: - Ingredient Provider Delegate
 extension MasterViewController: IngredientProviderDelegate {
-    func didSelectLocation(_ ingredient: Ingredient) {
+    func didSelectRecipeLine(_ recipeLine: RecipeLine) {
         // do something
     }
+
+    func wantsToAddRecipeLine() {
+        // call Recipe Line Controller
+//        removeContentController(ingredientListTableViewController, from: leftScreenStack)
+        fullScreenStack.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
+        
+        
+    }
+
 }
+
