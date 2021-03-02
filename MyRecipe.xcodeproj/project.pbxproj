@@ -21,7 +21,7 @@
 		744CAB8725EBD9CD005DA757 /* Ingredients.plist in Resources */ = {isa = PBXBuildFile; fileRef = 744CAB8625EBD9CD005DA757 /* Ingredients.plist */; };
 		744CAB8A25EBDBBF005DA757 /* Recipes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 744CAB8925EBDBBF005DA757 /* Recipes.plist */; };
 		744CAB8E25EBE36F005DA757 /* IngredientListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB8D25EBE36F005DA757 /* IngredientListDataSource.swift */; };
-		744CAB9325EBF549005DA757 /* IngredientListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9225EBF549005DA757 /* IngredientListTableViewCell.swift */; };
+		744CAB9325EBF549005DA757 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9225EBF549005DA757 /* RecipeCell.swift */; };
 		744CAB9825EBF801005DA757 /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9725EBF801005DA757 /* ConfigurableCell.swift */; };
 		744CAB9C25EBF82B005DA757 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */; };
 		744CABA125EC0347005DA757 /* AddIngredientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CABA025EC0347005DA757 /* AddIngredientController.swift */; };
@@ -45,7 +45,7 @@
 		744CAB8625EBD9CD005DA757 /* Ingredients.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Ingredients.plist; path = MyRecipe/View/Ingredients.plist; sourceTree = SOURCE_ROOT; };
 		744CAB8925EBDBBF005DA757 /* Recipes.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Recipes.plist; sourceTree = "<group>"; };
 		744CAB8D25EBE36F005DA757 /* IngredientListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListDataSource.swift; sourceTree = "<group>"; };
-		744CAB9225EBF549005DA757 /* IngredientListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListTableViewCell.swift; sourceTree = "<group>"; };
+		744CAB9225EBF549005DA757 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		744CAB9725EBF801005DA757 /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
 		744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
 		744CABA025EC0347005DA757 /* AddIngredientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientController.swift; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				740FFD6325BD9D0800A23384 /* Main.storyboard */,
-				744CAB9225EBF549005DA757 /* IngredientListTableViewCell.swift */,
+				744CAB9225EBF549005DA757 /* RecipeCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -247,7 +247,7 @@
 				740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */,
 				740FFD6025BD9D0800A23384 /* SceneDelegate.swift in Sources */,
 				74E3A67325CC63090008CCCA /* FileManager.swift in Sources */,
-				744CAB9325EBF549005DA757 /* IngredientListTableViewCell.swift in Sources */,
+				744CAB9325EBF549005DA757 /* RecipeCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
