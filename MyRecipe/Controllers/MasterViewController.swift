@@ -13,7 +13,7 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var fullScreenStack: UIStackView!
     @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
-    @IBOutlet weak var leftStackOverlay: UIStackView!
+    var leftStackOverlay = UIStackView(frame: CGRect(x: 100, y: 230, width: 400, height: 400))
     
     lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
     lazy var recipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
@@ -23,7 +23,6 @@ class MasterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addContentController(ingredientListTableViewController, to: leftScreenStack)
-        addContentController(recipeLineController, to: leftStackOverlay)
 
         // instantiate RecipeBrain and force broadcast
         let recipeBrain = RecipeBrain.singleton
@@ -36,11 +35,12 @@ class MasterViewController: UIViewController {
         recipeName.text = recipeBrain.getRecipeName()
         
     }
+
     
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        topStackView.axis = axisForSize(view.bounds.size)
-//    }
+    
+    
+    
+    
 
     private func addContentController(_ child: UIViewController, to stackView: UIStackView) {
         addChild(child) // adds the specified view controller to the current view
@@ -112,7 +112,8 @@ extension MasterViewController: IngredientProviderDelegate {
     func wantsToAddRecipeLine() {
         // call Recipe Line Controller
 //        removeContentController(ingredientListTableViewController, from: leftScreenStack)
-        fullScreenStack.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
+        addContentController(recipeLineController, to: leftStackOverlay)
+        self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
         
         
     }

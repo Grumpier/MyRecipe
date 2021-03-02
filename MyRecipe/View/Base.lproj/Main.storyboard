@@ -130,7 +130,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="820" height="1160"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SpX-Y5-z2a">
-                                        <rect key="frame" x="0.0" y="20" width="820" height="34"/>
+                                        <rect key="frame" x="0.0" y="50" width="820" height="34"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ingredient" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6NO-5N-0wo">
                                                 <rect key="frame" x="0.0" y="0.0" width="406" height="34"/>
@@ -149,17 +149,30 @@
                                         </subviews>
                                     </stackView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBJ-ce-9LY">
-                                        <rect key="frame" x="0.0" y="84" width="820" height="216"/>
+                                        <rect key="frame" x="0.0" y="114" width="820" height="216"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a New Recipe Line" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="134-za-EeL">
+                                        <rect key="frame" x="0.0" y="0.0" width="820" height="40"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="zf3-dX-fKh"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.91891902690000005" green="0.70984762909999999" blue="0.25823184850000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="SpX-Y5-z2a" secondAttribute="trailing" id="0xY-JP-EDl"/>
+                                    <constraint firstItem="134-za-EeL" firstAttribute="top" secondItem="g6j-qX-9Ti" secondAttribute="top" id="2hy-PV-5g6"/>
                                     <constraint firstAttribute="trailing" secondItem="wBJ-ce-9LY" secondAttribute="trailing" id="3kf-yO-Ga9"/>
+                                    <constraint firstAttribute="trailing" secondItem="134-za-EeL" secondAttribute="trailing" id="Cpg-IY-i8X"/>
                                     <constraint firstItem="wBJ-ce-9LY" firstAttribute="top" secondItem="SpX-Y5-z2a" secondAttribute="bottom" constant="30" id="EAN-Ri-LpG"/>
                                     <constraint firstItem="SpX-Y5-z2a" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="GiC-uW-oIi"/>
-                                    <constraint firstItem="SpX-Y5-z2a" firstAttribute="top" secondItem="g6j-qX-9Ti" secondAttribute="top" constant="20" id="YDt-2j-rPf"/>
+                                    <constraint firstItem="134-za-EeL" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="OcL-ht-1nr"/>
+                                    <constraint firstItem="SpX-Y5-z2a" firstAttribute="top" secondItem="g6j-qX-9Ti" secondAttribute="top" constant="50" id="YDt-2j-rPf"/>
                                     <constraint firstItem="wBJ-ce-9LY" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="ifA-Ch-ShL"/>
                                 </constraints>
                             </view>
@@ -175,6 +188,7 @@
                     </view>
                     <connections>
                         <outlet property="ingredient" destination="6NO-5N-0wo" id="JZQ-Wp-yBT"/>
+                        <outlet property="picker" destination="wBJ-ce-9LY" id="lUh-pX-jgX"/>
                         <outlet property="quantity" destination="NN3-TD-kKN" id="7uw-w3-PEl"/>
                     </connections>
                 </viewController>

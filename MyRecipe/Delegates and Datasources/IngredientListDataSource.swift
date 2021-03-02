@@ -13,12 +13,13 @@ class IngredientListDataSource: NSObject, GetRecipeUpdates {
     private let tableView: UITableView
 
     let recipeBrain = RecipeBrain.singleton
-    var recipe = Recipe(name: "Test", measure: Measurement<Unit>(value: 0, unit: UnitMass.grams), ingredientList: [RecipeLine(ingredient: Ingredient(name: "Test", type: .Flour), measure: Measurement<Unit>(value: 0, unit: UnitMass.grams))])
-    
+    var recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UnitMass.grams), ingredientList: [])
+
     init(tableView: UITableView) {
         self.tableView = tableView
         super.init()
         recipeBrain.addDelegate(self)
+        recipe = recipeBrain.recipe
         tableView.dataSource = self
         tableView.reloadData()
     }
