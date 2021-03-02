@@ -8,16 +8,17 @@
 import UIKit
 
 
-
-class IngredientListDataSource: NSObject, RecipeUpdateDelegate {
+class IngredientListDataSource: NSObject, GetRecipeUpdates {
 
     private let tableView: UITableView
 
+    let recipeBrain = RecipeBrain.singleton
     var recipe = Recipe(name: "Test", measure: Measurement<Unit>(value: 0, unit: UnitMass.grams), ingredientList: [RecipeLine(ingredient: Ingredient(name: "Test", type: .Flour), measure: Measurement<Unit>(value: 0, unit: UnitMass.grams))])
     
     init(tableView: UITableView) {
         self.tableView = tableView
         super.init()
+        recipeBrain.addDelegate(self)
         tableView.dataSource = self
         tableView.reloadData()
     }
@@ -29,7 +30,6 @@ class IngredientListDataSource: NSObject, RecipeUpdateDelegate {
     // called as a delegate from the RecipeUpdateDelegate protocol
     func didChangeRecipe(_ recipe: Recipe) {
         self.recipe = recipe
-        print(recipe.ingredientList)
         tableView.reloadData()
     }
 }

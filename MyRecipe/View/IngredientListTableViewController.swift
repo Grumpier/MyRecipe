@@ -11,7 +11,7 @@ protocol IngredientProviderDelegate: AnyObject {
     func didSelectLocation(_ ingredient: Ingredient)
 }
 
-class IngredientListTableViewController: UITableViewController, RecipeUpdateDelegate {
+class IngredientListTableViewController: UITableViewController {
     
     weak var delegate: IngredientProviderDelegate?
     private var ingredientListDataSource: IngredientListDataSource?
@@ -25,12 +25,6 @@ class IngredientListTableViewController: UITableViewController, RecipeUpdateDele
         // this instantiates the data source object for this tableview and provides the data source with the path to find the data
         ingredientListDataSource = IngredientListDataSource(tableView: tableView)
     }
-
-    func didChangeRecipe(_ recipe: Recipe) {
-        // pass it on....
-        ingredientListDataSource?.didChangeRecipe(recipe)
-    }
-
     
 }
 

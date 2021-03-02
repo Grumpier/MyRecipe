@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol RecipeUpdateDelegate: AnyObject {
-    func didChangeRecipe(_ recipe: Recipe)
-}
-
 
 class MasterViewController: UIViewController {
 
@@ -21,29 +17,21 @@ class MasterViewController: UIViewController {
     lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
 
     @IBOutlet weak var recipeName: UITextField!
-    weak var delegate: RecipeUpdateDelegate?
 
-    var recipes: [Recipe] = []
-    var ingredients: [Ingredient] = []
-    
-    // Test Data
-    @Published var recipe = Recipe(name: "Sylvie's Super Duper White Bread", measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams), ingredientList: [RecipeLine(ingredient: Ingredient(name: "White Flour", type: .Flour), measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams)), RecipeLine(ingredient: Ingredient(name: "Water", type: .Fluid), measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams))])
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         addContentController(ingredientListTableViewController, to: leftScreenStack)
-        // temp solution to push recipe to ingredientlistdatasource
-        ingredientListTableViewController.didChangeRecipe(recipe)
-        
+
+        // instantiate RecipeBrain and force broadcast
+        let recipeBrain = RecipeBrain.singleton
+        recipeBrain.broadcastRecipe()
 
         // assign the current controller as the delegate of the ingredient list child controller - needed to get the ingredient selections from that tableview
 //        ingredientListTableViewController.delegate = self
 
         // Place recipe name into label
-        recipeName.text = recipe.name
+        recipeName.text = recipeBrain.getRecipeName()
         
-        // update the delegates with the current recipe selected
-//        delegate?.didChangeRecipe(recipe)
     }
     
 //    override func viewWillLayoutSubviews() {
