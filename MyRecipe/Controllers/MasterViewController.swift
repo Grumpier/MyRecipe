@@ -28,9 +28,10 @@ class MasterViewController: UIViewController {
         let recipeBrain = RecipeBrain.singleton
         recipeBrain.broadcastRecipe()
 
-        // assign the current controller as the delegate of the ingredient list child controller
+        // assign the current controller as the delegate of all child views
         ingredientListTableViewController.delegate = self
-
+        recipeLineController.delegate = self
+        
         // Place recipe name into label
         recipeName.text = recipeBrain.getRecipeName()
         
@@ -109,14 +110,20 @@ extension MasterViewController: IngredientProviderDelegate {
         // do something
     }
 
+    // coming from the IngredientListTableViewController
     func wantsToAddRecipeLine() {
         // call Recipe Line Controller
-//        removeContentController(ingredientListTableViewController, from: leftScreenStack)
         addContentController(recipeLineController, to: leftStackOverlay)
         self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
-        
-        
+        leftStackOverlay.isHidden = false
     }
 
 }
 
+ // MARK: - RecipeLineDelegate
+extension MasterViewController: RecipeLineDelegate {
+    func returnFromRecipeLine () {
+        removeContentController(recipeLineController, from: leftStackOverlay)
+        leftStackOverlay.isHidden = true
+    }
+}

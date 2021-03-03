@@ -133,15 +133,21 @@
                                         <rect key="frame" x="0.0" y="50" width="820" height="34"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ingredient" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6NO-5N-0wo">
-                                                <rect key="frame" x="0.0" y="0.0" width="406" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="268" height="34"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Quantity" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NN3-TD-kKN">
-                                                <rect key="frame" x="414" y="0.0" width="406" height="34"/>
+                                                <rect key="frame" x="276" y="0.0" width="268" height="34"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                            </textField>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Measure" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZlS-D7-CeQ">
+                                                <rect key="frame" x="552" y="0.0" width="268" height="34"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -162,6 +168,29 @@
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nPt-s6-RTX">
+                                        <rect key="frame" x="0.0" y="370" width="820" height="50"/>
+                                        <items>
+                                            <barButtonItem systemItem="save" id="gKw-do-G59">
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="savePressed:" destination="6cO-Jr-mr3" id="0Rk-NZ-6VI"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="flexibleSpace" id="yIu-un-Mu8"/>
+                                            <barButtonItem title="Add new ingredient" id="7v6-aa-yGJ">
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="flexibleSpace" id="78u-6T-CZC"/>
+                                            <barButtonItem systemItem="cancel" id="DFA-7c-7Iy">
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="cancelPressed:" destination="6cO-Jr-mr3" id="CGp-cB-v9j"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </items>
+                                        <color key="barTintColor" systemColor="opaqueSeparatorColor"/>
+                                    </toolbar>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <constraints>
@@ -171,9 +200,12 @@
                                     <constraint firstAttribute="trailing" secondItem="134-za-EeL" secondAttribute="trailing" id="Cpg-IY-i8X"/>
                                     <constraint firstItem="wBJ-ce-9LY" firstAttribute="top" secondItem="SpX-Y5-z2a" secondAttribute="bottom" constant="30" id="EAN-Ri-LpG"/>
                                     <constraint firstItem="SpX-Y5-z2a" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="GiC-uW-oIi"/>
+                                    <constraint firstItem="nPt-s6-RTX" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="NXE-jp-0pF"/>
                                     <constraint firstItem="134-za-EeL" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="OcL-ht-1nr"/>
+                                    <constraint firstAttribute="trailing" secondItem="nPt-s6-RTX" secondAttribute="trailing" id="PLd-C9-H9Y"/>
                                     <constraint firstItem="SpX-Y5-z2a" firstAttribute="top" secondItem="g6j-qX-9Ti" secondAttribute="top" constant="50" id="YDt-2j-rPf"/>
                                     <constraint firstItem="wBJ-ce-9LY" firstAttribute="leading" secondItem="g6j-qX-9Ti" secondAttribute="leading" id="ifA-Ch-ShL"/>
+                                    <constraint firstItem="nPt-s6-RTX" firstAttribute="top" secondItem="wBJ-ce-9LY" secondAttribute="bottom" constant="40" id="qdw-gx-O9j"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -188,8 +220,9 @@
                     </view>
                     <connections>
                         <outlet property="ingredient" destination="6NO-5N-0wo" id="JZQ-Wp-yBT"/>
+                        <outlet property="measure" destination="ZlS-D7-CeQ" id="Teq-VX-1Je"/>
                         <outlet property="picker" destination="wBJ-ce-9LY" id="lUh-pX-jgX"/>
-                        <outlet property="quantity" destination="NN3-TD-kKN" id="7uw-w3-PEl"/>
+                        <outlet property="quantity" destination="NN3-TD-kKN" id="cWf-ev-V9U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rpr-St-ztT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -49,6 +49,11 @@ class RecipeBrain {
         return recipe.name
     }
     
+    func addRecipeLine(_ newLine: RecipeLine) {
+        recipe.ingredientList.append(newLine)
+        broadcastRecipe()
+    }
+    
     
     func writeRecipes() {
         
