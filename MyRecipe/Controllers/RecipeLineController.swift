@@ -9,14 +9,18 @@ import UIKit
 
 protocol RecipeLineDelegate {
     func returnFromRecipeLine()
+    func getAddMode() -> Int
 }
 
+// Needs to know whether it is adding or editing an exiting line
+// Too tricky to create a custom init() so we are calling the delegate to tell us what we are
 class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
-        
+    
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var ingredient: UITextField!
     @IBOutlet weak var measure: UITextField!
     @IBOutlet weak var quantity: UITextField!
+    @IBOutlet weak var viewTitle: UILabel!
     
     
     let recipeBrain = RecipeBrain.singleton
@@ -25,7 +29,8 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     var listIndex = 0
     var delegate: RecipeLineDelegate?
     var qty = 0.0
-    
+    var addMode = 0 // 0 for adding, 1 for editing
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         ingredient.delegate = self
@@ -34,6 +39,34 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         picker.dataSource = self
         ingredients = recipeBrain.ingredients
         makePickerList(list: listIndex)
+        askDelegateForMode()
+    }
+    
+    // configure controller and interface for whether in add or edit mode
+    func askDelegateForMode() {
+        addMode = delegate?.getAddMode() ?? 0
+        if addMode == 0 {
+            viewTitle.text = "Add a New Recipe Line"
+            clearLine()
+        } else if addMode == 1 {
+            viewTitle.text = "Edit Recipe Line"
+            getLine()
+        }
+    }
+    
+    func clearLine() {
+        ingredient.text = ""
+        quantity.text = ""
+        measure.text = ""
+        makePickerList(list: 0)
+    }
+    
+    func getLine() {
+        let recipeLine = recipeBrain.getCurrentRecipeLine()
+        ingredient.text = recipeLine.ingredient.name
+        quantity.text = String(format: "%.3f", recipeLine.measure.value)
+        measure.text = recipeLine.measure.unit.symbol
+        makePickerList(list: 0)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -75,40 +108,41 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
 
     @IBAction func savePressed(_ sender: UIBarButtonItem) {
-        // Check if a valid recipe line was created
-        if let qtyText = quantity.text {
-            qty = Double(qtyText) ?? 0.0
-            if qty <= 0 {
-                sendAlert(title: "Quantity", message: "Please enter a value greater than zero")
-                return
-            }
-        } else {
-            sendAlert(title: "Quantity", message: "Please enter a value greater than zero")
+        var addResult = 0
+        if quantity.text == nil  {
+            alertMessage(title: "Quantity", message: "Please enter a quantity.")
             return
         }
-        if !ingredients.map({ $0.name }).contains(ingredient.text) {
-            sendAlert(title: "Ingredient", message: "Select an existing ingredient or press 'Add New Ingredient'")
+        if (ingredient.text ?? "").isEmpty  {
+            alertMessage(title: "Ingredient", message: "Please select an ingredient")
             return
         }
-        if !UOM.allCases.map({ $0.rawValue.symbol }).contains(measure.text) {
-            sendAlert(title: "Measure", message: "Select a unit of measure")
+        if (measure.text ?? "").isEmpty {
+            alertMessage(title: "Measure", message: "Please select a unit of measure")
             return
         }
-        // passed all tests add to recipe - make a recipeline from the data
-        let thisIngredient = ingredients.filter({ $0.name == ingredient.text }).first!
-        let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first?.rawValue)!
-        let thisRecipeLine = RecipeLine(ingredient: thisIngredient, measure: Measurement<Unit>(value: qty, unit: thisMeasure))
-        recipeBrain.addRecipeLine(thisRecipeLine)
-        ingredient.text = ""
-        quantity.text = ""
-        measure.text = ""
+        let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
+        let ingredientName = ingredient.text ?? ""
+        let qtyValue = Double(quantity.text ?? "0") ?? 0.0
+        if addMode == 0 {
+            addResult = recipeBrain.addRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
+        } else if addMode == 1 {
+            addResult = recipeBrain.editRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
+        }
+        
+        if addResult == 1 {
+            alertMessage(title: "Ingredient", message: "Select a valid ingredient or Add a new one")
+            return
+        } else if addResult == 2 {
+            alertMessage(title: "Quantity", message: "Please enter a quantity greater than 0.")
+            return
+        }
+        clearLine()
         delegate?.returnFromRecipeLine()
     }
 
     @IBAction func cancelPressed(_ selector: UIBarButtonItem) {
-        ingredient.text = ""
-        quantity.text = ""
-        measure.text = ""
+        clearLine()
         delegate?.returnFromRecipeLine()
     }
     
@@ -138,10 +172,9 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         }
     }
     
-    func sendAlert(title: String, message: String) {
+    func alertMessage(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
-    }
-
+    }    
 }

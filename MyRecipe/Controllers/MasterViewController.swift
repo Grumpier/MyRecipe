@@ -13,36 +13,38 @@ class MasterViewController: UIViewController {
     @IBOutlet weak var fullScreenStack: UIStackView!
     @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
+    
+    // MODIFY THIS SO THAT IT HAS CORRECT CONSTRAINTS???
     var leftStackOverlay = UIStackView(frame: CGRect(x: 100, y: 230, width: 400, height: 400))
+    var recipeLineAddMode = 0 // used to track whether recipe line controller is adding or editing lines
     
     lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
-    lazy var recipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
+    lazy var addRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
+    lazy var editRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
 
     @IBOutlet weak var recipeName: UITextField!
+    let recipeBrain = RecipeBrain.singleton
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addContentController(ingredientListTableViewController, to: leftScreenStack)
 
         // instantiate RecipeBrain and force broadcast
-        let recipeBrain = RecipeBrain.singleton
         recipeBrain.broadcastRecipe()
 
         // assign the current controller as the delegate of all child views
         ingredientListTableViewController.delegate = self
-        recipeLineController.delegate = self
-        
+        addRecipeLineController.delegate = self
+        editRecipeLineController.delegate = self
+        recipeName.delegate = self
+
         // Place recipe name into label
         recipeName.text = recipeBrain.getRecipeName()
+        recipeName.isEnabled = true
         
     }
 
     
-    
-    
-    
-    
-
     private func addContentController(_ child: UIViewController, to stackView: UIStackView) {
         addChild(child) // adds the specified view controller to the current view
         stackView.addArrangedSubview(child.view) // adds the container to the stack
@@ -50,10 +52,12 @@ class MasterViewController: UIViewController {
     }
 
     private func removeContentController(_ child: UIViewController, from stackView: UIStackView) {
-        child.willMove(toParent: nil)
-        stackView.removeArrangedSubview(child.view)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
+        if self.children.contains(child) {
+            child.willMove(toParent: nil)
+            stackView.removeArrangedSubview(child.view)
+            child.view.removeFromSuperview()
+            child.removeFromParent()
+        }
     }
 
 
@@ -69,9 +73,8 @@ class MasterViewController: UIViewController {
         }
         return viewController
     }
-
-
-
+    
+    
     
     // Search for a Recipe
     @IBAction func searchRecipe(_ sender: UIBarButtonItem) {
@@ -80,40 +83,30 @@ class MasterViewController: UIViewController {
 
     }
     
-//    @IBAction func addRecipe(_ sender: UIBarButtonItem) {
-//        // clear the table view and recipe label
-//        recipeName.text = ""
-//        recipeName.isUserInteractionEnabled = true
-//        recipe.ingredientList = []
-//        tableView.reloadData()
-//
-//    }
-    
-//    @objc func addIngredient() {
-//        // display a list of ingredients to choose from - if "+"
-//        ingredientPickerDelegate.strings = ingredients.map{ $0.name }
-//        DispatchQueue.main.async{self.ingredientPicker.reloadAllComponents()}
-//        ingredientPicker.isHidden = false
-//    }
-//
-//    @objc func ingredientSelected() {
-//        let ingredientRow = ingredientPicker.selectedRow(inComponent: 0)
-//
-//        print("\(ingredientRow)")
-//    }
+    @IBAction func addRecipe(_ sender: UIBarButtonItem) {
+//        // clear the recipe label and have RecipeBrain broadcast an empty recipe to child controllers
+        recipeName.text = ""
+        recipeName.isSelected = true
+        recipeBrain.newRecipe()
+    }
 }
 
 
  // MARK: - Ingredient Provider Delegate
 extension MasterViewController: IngredientProviderDelegate {
-    func didSelectRecipeLine(_ recipeLine: RecipeLine) {
-        // do something
-    }
-
     // coming from the IngredientListTableViewController
     func wantsToAddRecipeLine() {
         // call Recipe Line Controller
-        addContentController(recipeLineController, to: leftStackOverlay)
+        recipeLineAddMode = 0
+        addContentController(addRecipeLineController, to: leftStackOverlay)
+        self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
+        leftStackOverlay.isHidden = false
+    }
+
+    func wantsToEditRecipeLine() {
+        // call Recipe Line Controller
+        recipeLineAddMode = 1
+        addContentController(editRecipeLineController, to: leftStackOverlay)
         self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
         leftStackOverlay.isHidden = false
     }
@@ -123,7 +116,30 @@ extension MasterViewController: IngredientProviderDelegate {
  // MARK: - RecipeLineDelegate
 extension MasterViewController: RecipeLineDelegate {
     func returnFromRecipeLine () {
-        removeContentController(recipeLineController, from: leftStackOverlay)
+        removeContentController(addRecipeLineController, from: leftStackOverlay)
+        removeContentController(editRecipeLineController, from: leftStackOverlay)
         leftStackOverlay.isHidden = true
     }
+    
+    func getAddMode() -> Int {
+        return recipeLineAddMode
+    }
 }
+
+ // MARK: - Text Field Delegate - change of recipe name
+extension MasterViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == recipeName {
+            let alert = UIAlertController(title: "Save recipe name?", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                    self.recipeBrain.setRecipeName(textField.text ?? self.recipeBrain.getRecipeName())
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                textField.text = self.recipeBrain.getRecipeName()
+            }))
+            present(alert, animated: true, completion: nil)
+        }
+    }
+
+}
+    

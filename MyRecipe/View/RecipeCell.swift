@@ -15,6 +15,6 @@ class RecipeCell: UITableViewCell, ReusableIdentifier {
 extension RecipeCell: ConfigurableCell {
     func configure(object: RecipeLine) {
         ingredient.text = object.ingredient.name
-        measure.text = String(format: "%.1f", object.measure.value) + "\(object.measure.unit.symbol)"
+        measure.text = String(format: "%.3f", object.measure.value) + "\(object.measure.unit.symbol)"
     }
 }
