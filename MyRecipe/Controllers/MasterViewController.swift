@@ -8,12 +8,13 @@
 import UIKit
 
 
-class MasterViewController: UIViewController {
+class MasterViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var fullScreenStack: UIStackView!
     @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
-    
+    @IBOutlet weak var recipeName: UITextField!
+
     // MODIFY THIS SO THAT IT HAS CORRECT CONSTRAINTS???
     var leftStackOverlay = UIStackView(frame: CGRect(x: 100, y: 230, width: 400, height: 400))
     var recipeLineAddMode = 0 // used to track whether recipe line controller is adding or editing lines
@@ -21,8 +22,6 @@ class MasterViewController: UIViewController {
     lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
     lazy var addRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
     lazy var editRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
-
-    @IBOutlet weak var recipeName: UITextField!
     let recipeBrain = RecipeBrain.singleton
 
     override func viewDidLoad() {
@@ -30,8 +29,11 @@ class MasterViewController: UIViewController {
         addContentController(ingredientListTableViewController, to: leftScreenStack)
 
         // instantiate RecipeBrain and force broadcast
+        recipeBrain.loadRecipe()
+        recipeBrain.loadIngredients()
+        recipeBrain.loadRecipes()
         recipeBrain.broadcastRecipe()
-
+        
         // assign the current controller as the delegate of all child views
         ingredientListTableViewController.delegate = self
         addRecipeLineController.delegate = self
@@ -40,8 +42,6 @@ class MasterViewController: UIViewController {
 
         // Place recipe name into label
         recipeName.text = recipeBrain.getRecipeName()
-        recipeName.isEnabled = true
-        
     }
 
     
@@ -75,7 +75,6 @@ class MasterViewController: UIViewController {
     }
     
     
-    
     // Search for a Recipe
     @IBAction func searchRecipe(_ sender: UIBarButtonItem) {
 
@@ -89,6 +88,21 @@ class MasterViewController: UIViewController {
         recipeName.isSelected = true
         recipeBrain.newRecipe()
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let alert = UIAlertController(title: "Save recipe name?", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                self.recipeBrain.setRecipeName(textField.text ?? self.recipeBrain.getRecipeName())
+            print(self.recipeBrain.recipe.name)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            textField.text = self.recipeBrain.getRecipeName()
+            print(self.recipeBrain.recipe.name)
+        }))
+        present(alert, animated: true, completion: nil)
+        return true
+    }
+    
 }
 
 
@@ -126,20 +140,4 @@ extension MasterViewController: RecipeLineDelegate {
     }
 }
 
- // MARK: - Text Field Delegate - change of recipe name
-extension MasterViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == recipeName {
-            let alert = UIAlertController(title: "Save recipe name?", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-                    self.recipeBrain.setRecipeName(textField.text ?? self.recipeBrain.getRecipeName())
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-                textField.text = self.recipeBrain.getRecipeName()
-            }))
-            present(alert, animated: true, completion: nil)
-        }
-    }
-
-}
     

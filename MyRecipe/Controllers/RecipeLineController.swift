@@ -14,14 +14,13 @@ protocol RecipeLineDelegate {
 
 // Needs to know whether it is adding or editing an exiting line
 // Too tricky to create a custom init() so we are calling the delegate to tell us what we are
-class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates {
     
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var ingredient: UITextField!
     @IBOutlet weak var measure: UITextField!
     @IBOutlet weak var quantity: UITextField!
     @IBOutlet weak var viewTitle: UILabel!
-    
     
     let recipeBrain = RecipeBrain.singleton
     var ingredients = [Ingredient]()
@@ -37,6 +36,7 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         measure.delegate = self
         picker.delegate = self
         picker.dataSource = self
+        recipeBrain.addDelegate(self)
         ingredients = recipeBrain.ingredients
         makePickerList(list: listIndex)
         askDelegateForMode()
@@ -69,44 +69,6 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         makePickerList(list: 0)
     }
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerList.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerList[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if listIndex == 0 {
-            ingredient.text = pickerList[row]
-        } else if listIndex == 1 {
-            measure.text = pickerList[row]
-        }
-    }
-    
-    func makePickerList(list: Int) {
-        switch list {
-        case 0: do {
-            self.pickerList = [""]
-            for ingredient in ingredients {
-                self.pickerList.append(ingredient.name)
-            }
-        }
-        case 1: do {
-            self.pickerList = [""]
-            for uom in UOM.allCases {
-                self.pickerList.append(uom.rawValue.symbol)
-            }
-        }
-        default: pickerList = [""]
-        }
-    }
-
     @IBAction func savePressed(_ sender: UIBarButtonItem) {
         var addResult = 0
         if quantity.text == nil  {
@@ -146,6 +108,14 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         delegate?.returnFromRecipeLine()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // code here for setting add mode for ingredient controller
+        if segue.identifier == "IngredientController" {
+            let ingredientController = segue.destination as! IngredientController
+            ingredientController.addMode = 0
+        }
+    }
+            
     func textFieldDidBeginEditing(_ textField: UITextField){
         if textField == ingredient {
             listIndex = 0
@@ -177,4 +147,51 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         self.present(alert, animated: true)
     }    
+
+    // MARK: - Pickerview Delegate Methods
+   func numberOfComponents(in pickerView: UIPickerView) -> Int {
+       return 1
+   }
+
+   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+       return pickerList.count
+   }
+
+   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+       return pickerList[row]
+   }
+
+   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+       if listIndex == 0 {
+           ingredient.text = pickerList[row]
+       } else if listIndex == 1 {
+           measure.text = pickerList[row]
+       }
+   }
+
+    func makePickerList(list: Int) {
+        switch list {
+        case 0: do {
+            self.pickerList = [""]
+            for ingredient in ingredients {
+                self.pickerList.append(ingredient.name)
+            }
+        }
+        case 1: do {
+            self.pickerList = [""]
+            for uom in UOM.allCases {
+                self.pickerList.append(uom.rawValue.symbol)
+            }
+        }
+        default: pickerList = [""]
+        }
+    }
+    
+    func didChangeIngredients(_ ingredients: [Ingredient]) {
+        self.ingredients = ingredients
+        makePickerList(list: 0)
+        picker.reloadComponent(0)
+    }
+
 }
+

@@ -9,6 +9,15 @@ import Foundation
 
 protocol GetRecipeUpdates: AnyObject {
     func didChangeRecipe(_ recipe: Recipe)
+    func didChangeIngredients(_ ingredients: [Ingredient])
+    func didChangeRecipes(_ recipes: [Recipe])
+}
+
+// make all the protocol methods optional
+extension GetRecipeUpdates {
+    func didChangeRecipe(_ recipe: Recipe) {}
+    func didChangeIngredients(_ ingredients: [Ingredient]) {}
+    func didChangeRecipes(_ recipes: [Recipe]) {}
 }
 
 
@@ -21,30 +30,47 @@ class RecipeBrain {
     var delegates = [GetRecipeUpdates]()
     var currentRecipeLine: RecipeLine?
     var currentRecipeLineIndex = 0
-    var currentRecipeIndex = 0
+    var currentRecipeIndex = -1
+    var recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [])
     
-    // Test Data
-    var recipe = Recipe(name: "Sylvie's Super Duper White Bread", measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams), ingredientList: [RecipeLine(ingredient: Ingredient(name: "White Flour", type: .Flour), measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams)), RecipeLine(ingredient: Ingredient(name: "Water", type: .Fluid), measure: Measurement<Unit>(value: 1000, unit: UnitMass.grams)), RecipeLine(ingredient: Ingredient(name: "Yeast", type: .Yeast), measure: Measurement<Unit>(value: 50, unit: UnitMass.grams))])
-
-    // TEMPORARILY USING LOCAL PLISTS
-    let urlIngredients = Bundle.main.url(forResource: "Ingredients", withExtension: "plist")!
-    let urlRecipes = Bundle.main.url(forResource: "Recipes", withExtension: "plist")!
     
     // Directories for storing data objects
-    let recipePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Recipes.plist")
+    let urlRecipes = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Recipes.plist")
 
-    let ingredientPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Ingredients.plist")
+    let urlIngredients = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Ingredients.plist")
+    
+    let urlRecipe = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Recipe.plist")
 
+    let defaults = UserDefaults.standard
+    
+    // Delegate stuff for broadcasting to controllers
     func addDelegate(_ delegate: GetRecipeUpdates){
+        ///Registers a delegate of GetRecipeUpdates delegate protocol
         delegates.append(delegate)
     }
     
     func broadcastRecipe() {
+        ///Broadcasts current recipe to all delegates of GetRecipeUpdates protocol
         for delegate in delegates {
             delegate.didChangeRecipe(recipe)
         }
     }
     
+    func broadcastIngredients() {
+        ///Broadcasts ingredient array
+        for delegate in delegates {
+            delegate.didChangeIngredients(ingredients)
+            print("broadcasting ingredients")
+        }
+    }
+    
+    func broadcastRecipes() {
+        ///Broadcasts ingredient array
+        for delegate in delegates {
+            delegate.didChangeRecipes(recipes)
+        }
+    }
+
     func getRecipeName() -> String {
         return recipe.name
     }
@@ -53,6 +79,14 @@ class RecipeBrain {
         /// Changes recipe name with passed string. Saves changed recipe.
         recipe.name = name
         saveRecipe()
+    }
+    
+    func addIngredient(name: String, type: IngredientType.RawValue) {
+        /// Create a new ingredient and append to ingredients array. Broadcasts new array.
+        let ingredient = Ingredient(name: name, type: IngredientType(rawValue: type)!)
+        ingredients.append(ingredient)
+        broadcastIngredients()
+        print(ingredients)
     }
     
     func getRecipeLine(indexPath: IndexPath) -> RecipeLine {
@@ -110,55 +144,106 @@ class RecipeBrain {
     }
     
     func saveRecipe() {
-        ///Saves the current recipe in the recipes array at the currentrecipeindex.
-        recipes[currentRecipeIndex] = recipe
+        ///Saves the current recipe in the recipes array at the currentrecipeindex. If index is -1 appends unless recipe.name is empty. Broadcasts new array.
+        if currentRecipeIndex == -1 {
+            if !recipe.name.isEmpty {
+                recipes.append(recipe)
+                currentRecipeIndex = recipes.count - 1
+            }
+        } else {
+            recipes[currentRecipeIndex] = recipe
+        }
+        broadcastRecipes()
     }
         
     func newRecipe() {
-        /// Creates and broadcasts to delegates an empty recipe object. Appends to recipes array and updates currentRecipeIndex. If add aborted, deleteRecipe at this index needs to be called.
+        /// Creates and broadcasts to delegates an empty recipe object. Sets currentRecipeIndex to -1 to indicate current recipe is not in recipes array.
         recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [])
-        recipes.append(recipe)
-        currentRecipeIndex = recipes.count - 1
+        currentRecipeIndex = -1
         broadcastRecipe()
     }
     
-    func writeRecipes() {
-        
-        
+    func writeIngredients() {
+        ///Write ingredients array to disk
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(ingredients)
+            try data.write(to: urlIngredients!)
+        } catch {
+            print("Error encoding ingredients array, \(error)")
+        }
     }
     
+    func writeRecipe() {
+        ///Write recipe object to disk
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(recipe)
+            try data.write(to: urlRecipe!)
+        } catch {
+            print("Error encoding current recipe, \(error)")
+        }
+    }
     
-    static func readRecipes(){
-        
-        
+    func writeRecipes() {
+        ///Write recipes array to disk
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(recipes)
+            try data.write(to: urlRecipes!)
+        } catch {
+            print("Error encoding ingredients array, \(error)")
+        }
+    }
+    
+    func writeCurrentRecipeIndex() {
+        defaults.setValue(currentRecipeIndex, forKey: "CurrentRecipeIndex")
     }
     
     func loadIngredients() {
-        if let data = try? Data(contentsOf: urlIngredients) {
+        ///Reads ingredients array from disk
+        if let data = try? Data(contentsOf: urlIngredients!) {
             let decoder = PropertyListDecoder()
             do {
                 ingredients = try decoder.decode([Ingredient].self, from: data)
-                print(ingredients)
             } catch {
-                print("Error decoding item array \(error)")
+                print("Error decoding ingredients array \(error)")
             }
         }
-        
+    }
+    
+    func loadRecipe() {
+        ///Reads current recipe from disk
+        if let data = try? Data(contentsOf: urlRecipe!) {
+            let decoder = PropertyListDecoder()
+            do {
+                recipe = try decoder.decode(Recipe.self, from: data)
+            } catch {
+                print("Error decoding current recipe \(error)")
+            }
+        }
     }
 
-    // NOT WORKING - NEED TO REVIEW OBJECT AND PLIST STRUCTURES
-    func loadRecipes(url: URL) {
-        if let data = try? Data(contentsOf: urlRecipes) {
+    func loadRecipes() {
+        ///Reads recipes array from disk
+        if let data = try? Data(contentsOf: urlRecipes!) {
             let decoder = PropertyListDecoder()
             do {
                 recipes = try decoder.decode([Recipe].self, from: data)
-                print(recipes)
+                if recipes.count == 0 {
+                    currentRecipeIndex = -1
+                } else {
+                    // load currentRecipeIndex
+                    if let data = defaults.integer(forKey: "CurrentRecipeIndex") as Int? {
+                        currentRecipeIndex = data
+                    } else {
+                        currentRecipeIndex = -1
+                    }
+                }
             } catch {
-                print("Error decoding item array \(error)")
+                print("Error decoding current recipe \(error)")
             }
         }
-        
     }
-    
 
 }

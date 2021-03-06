@@ -8,12 +8,12 @@
 import Foundation
 
 enum UOM: String, CaseIterable {
+    case kilograms
+    case grams
     case liters
     case milliliters
     case quarts
     case cups
-    case kilograms
-    case grams
     case pounds
 }
 
@@ -22,12 +22,12 @@ extension UOM: RawRepresentable {
 
     init?(rawValue: RawValue) {
         switch rawValue {
+        case UnitMass.kilograms: self = .kilograms
+        case UnitMass.grams: self = .grams
         case UnitVolume.liters: self = .liters
         case UnitVolume.milliliters: self = .milliliters
         case UnitVolume.quarts: self = .quarts
         case UnitVolume.cups: self = .cups
-        case UnitMass.kilograms: self = .kilograms
-        case UnitMass.grams: self = .grams
         case UnitMass.pounds: self = .pounds
         default: return nil
         }
@@ -35,12 +35,12 @@ extension UOM: RawRepresentable {
 
     var rawValue: RawValue {
         switch self {
+        case .kilograms: return UnitMass.kilograms
+        case .grams: return UnitMass.grams
         case .liters: return UnitVolume.liters
         case .milliliters: return UnitVolume.milliliters
         case .quarts: return UnitVolume.quarts
         case .cups: return UnitVolume.cups
-        case .kilograms: return UnitMass.kilograms
-        case .grams: return UnitMass.grams
         case .pounds: return UnitMass.pounds
         }
     }
