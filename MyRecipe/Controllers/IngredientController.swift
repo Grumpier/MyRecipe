@@ -50,7 +50,7 @@ class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerView
             alertMessage(title: "Ingredient Type", message: "Please select an ingredient type")
             return
         }
-        recipeBrain.addIngredient(name: ingredient.text!, type: type.text!)
+        recipeBrain.addIngredient(name: ingredient.text!.capitalized, type: type.text!)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -104,5 +104,11 @@ class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerView
         }
     }
 
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == type {
+            return false; //do not show keyboard nor cursor
+        }
+        return true
+    }
 
 }

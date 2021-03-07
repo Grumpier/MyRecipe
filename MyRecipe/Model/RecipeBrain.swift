@@ -68,6 +68,7 @@ class RecipeBrain {
         ///Broadcasts ingredient array
         for delegate in delegates {
             delegate.didChangeRecipes(recipes)
+            print("broadcase recipes")
         }
     }
 
@@ -86,7 +87,6 @@ class RecipeBrain {
         let ingredient = Ingredient(name: name, type: IngredientType(rawValue: type)!)
         ingredients.append(ingredient)
         broadcastIngredients()
-        print(ingredients)
     }
     
     func getRecipeLine(indexPath: IndexPath) -> RecipeLine {

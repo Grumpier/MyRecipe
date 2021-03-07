@@ -100,12 +100,14 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             return
         }
         clearLine()
-        delegate?.returnFromRecipeLine()
+        self.dismiss(animated: true, completion: nil)
+//        delegate?.returnFromRecipeLine()
     }
 
     @IBAction func cancelPressed(_ selector: UIBarButtonItem) {
         clearLine()
-        delegate?.returnFromRecipeLine()
+        self.dismiss(animated: true, completion: nil)
+//        delegate?.returnFromRecipeLine()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -134,7 +136,7 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         if textField == ingredient {
             listIndex = 0
             makePickerList(list: listIndex)
-            pickerList = pickerList.filter {$0.starts(with: textField.text!) }
+            pickerList = pickerList.filter {$0.starts(with: textField.text!.capitalized) }
             if pickerList.count == 0 {
                 pickerList.append(" ") // to allow user to selecte from picker - IOS doesn't detect keypress on picker without movement
             }

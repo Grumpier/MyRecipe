@@ -8,37 +8,33 @@
 import UIKit
 
 
-class MasterViewController: UIViewController, UITextFieldDelegate {
+class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
 
     @IBOutlet weak var fullScreenStack: UIStackView!
-    @IBOutlet weak var leftScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
     @IBOutlet weak var recipeName: UITextField!
-
-    // MODIFY THIS SO THAT IT HAS CORRECT CONSTRAINTS???
-    var leftStackOverlay = UIStackView(frame: CGRect(x: 100, y: 230, width: 400, height: 400))
-    var recipeLineAddMode = 0 // used to track whether recipe line controller is adding or editing lines
+    @IBOutlet weak var tableView: UITableView!
     
-    lazy var ingredientListTableViewController: IngredientListTableViewController = self.buildFromStoryboard("Main")
-    lazy var addRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
-    lazy var editRecipeLineController: RecipeLineController = self.buildFromStoryboard("Main")
+    // ADD A PREPARE FOR SEGUE FOR SEGUE BASED ON EDIT
+    var recipeLineAddMode = 0 // used to track whether recipe line controller is adding or editing lines
+    private var ingredientListDataSource: IngredientListDataSource?
+
     let recipeBrain = RecipeBrain.singleton
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addContentController(ingredientListTableViewController, to: leftScreenStack)
-
         // instantiate RecipeBrain and force broadcast
         recipeBrain.loadRecipe()
         recipeBrain.loadIngredients()
         recipeBrain.loadRecipes()
         recipeBrain.broadcastRecipe()
         
-        // assign the current controller as the delegate of all child views
-        ingredientListTableViewController.delegate = self
-        addRecipeLineController.delegate = self
-        editRecipeLineController.delegate = self
+        // Delegates
+//        tableView.delegate = self
         recipeName.delegate = self
+        
+        // this instantiates the data source object for this tableview and provides the data source with the path to find the data
+        ingredientListDataSource = IngredientListDataSource(tableView: tableView)
 
         // Place recipe name into label
         recipeName.text = recipeBrain.getRecipeName()
@@ -75,19 +71,14 @@ class MasterViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    // Search for a Recipe
-    @IBAction func searchRecipe(_ sender: UIBarButtonItem) {
-
-
-
-    }
-    
     @IBAction func addRecipe(_ sender: UIBarButtonItem) {
 //        // clear the recipe label and have RecipeBrain broadcast an empty recipe to child controllers
         recipeName.text = ""
         recipeName.isSelected = true
         recipeBrain.newRecipe()
     }
+    
+     // MARK: - RecipeNameTextField functions
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let alert = UIAlertController(title: "Save recipe name?", message: "", preferredStyle: .alert)
@@ -102,42 +93,64 @@ class MasterViewController: UIViewController, UITextFieldDelegate {
         present(alert, animated: true, completion: nil)
         return true
     }
-    
-}
 
-
- // MARK: - Ingredient Provider Delegate
-extension MasterViewController: IngredientProviderDelegate {
-    // coming from the IngredientListTableViewController
-    func wantsToAddRecipeLine() {
-        // call Recipe Line Controller
-        recipeLineAddMode = 0
-        addContentController(addRecipeLineController, to: leftStackOverlay)
-        self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
-        leftStackOverlay.isHidden = false
-    }
-
-    func wantsToEditRecipeLine() {
-        // call Recipe Line Controller
-        recipeLineAddMode = 1
-        addContentController(editRecipeLineController, to: leftStackOverlay)
-        self.view.insertSubview(leftStackOverlay, aboveSubview: leftScreenStack)
-        leftStackOverlay.isHidden = false
-    }
-
-}
-
- // MARK: - RecipeLineDelegate
-extension MasterViewController: RecipeLineDelegate {
-    func returnFromRecipeLine () {
-        removeContentController(addRecipeLineController, from: leftStackOverlay)
-        removeContentController(editRecipeLineController, from: leftStackOverlay)
-        leftStackOverlay.isHidden = true
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        let alert = UIAlertController(title: "Save recipe name?", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                self.recipeBrain.setRecipeName(textField.text ?? self.recipeBrain.getRecipeName())
+            print(self.recipeBrain.recipe.name)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            textField.text = self.recipeBrain.getRecipeName()
+            print(self.recipeBrain.recipe.name)
+        }))
+        present(alert, animated: true, completion: nil)
+        return true
     }
     
-    func getAddMode() -> Int {
-        return recipeLineAddMode
+     // MARK: - IngredientListTableView Functions
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("row \(indexPath.row) selected")
     }
-}
-
     
+    
+    func tableView(_ tableView: UITableView,
+                            contextMenuConfigurationForRowAt indexPath: IndexPath,
+                            point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil,
+                                          previewProvider: nil,
+                                          actionProvider: {
+            suggestedActions in
+            let deleteAction = UIAction(title: NSLocalizedString("Delete this line", comment: ""), image: UIImage(systemName: "trash"), attributes: .destructive) { action in self.performDelete(indexPath)}
+            let editAction = UIAction(title: NSLocalizedString("Edit this line", comment: ""), image: UIImage(systemName: "pencil"), attributes: .destructive) {action in
+                self.performEdit(indexPath)}
+            return UIMenu(title: "", children: [deleteAction, editAction])
+        })
+    }
+    
+    func performDelete(_ indexPath: IndexPath) {
+        let thisRecipeLine = recipeBrain.getRecipeLine(indexPath: indexPath)
+        let thisIngredient = thisRecipeLine.ingredient.name
+        let thisQuantity = String(format: "%.3f", thisRecipeLine.measure.value)
+        let thisUOM = thisRecipeLine.measure.unit.symbol
+        alertOkCancel(title: "Delete this recipe line?", message: thisIngredient + " - " + thisQuantity + thisUOM, indexPath: indexPath)
+    }
+
+    func performEdit(_ indexPath: IndexPath) {
+        recipeBrain.setCurrentRecipeLine(indexPath: indexPath)
+        print("edit button pressed")
+//        delegate?.wantsToEditRecipeLine()
+    }
+    
+    // confirm delete line
+    func alertOkCancel(title: String, message: String, indexPath: IndexPath) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            self.recipeBrain.deleteRecipeLine(indexPath.row)
+        }))
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
+        present(alert, animated: true, completion: nil)
+    }
+
+}

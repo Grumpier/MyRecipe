@@ -28,9 +28,9 @@ class IngredientListTableViewController: UITableViewController {
         ingredientListDataSource = IngredientListDataSource(tableView: tableView)
     }
     
-    @IBAction func addIngredientPressed(_ sender: UIButton) {
-        delegate?.wantsToAddRecipeLine()
-    }
+//    @IBAction func addIngredientPressed(_ sender: UIButton) {
+//        delegate?.wantsToAddRecipeLine()
+//    }
 
     @IBAction func addSectionPressed(_ sender: UIButton) {
     }
@@ -68,7 +68,7 @@ class IngredientListTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil,
                                           previewProvider: nil,
                                           actionProvider: {
-            suggestedActions in
+                                           suggestedActions in
             let deleteAction = UIAction(title: NSLocalizedString("Delete this line", comment: ""), image: UIImage(systemName: "trash"), attributes: .destructive) { action in self.performDelete(indexPath)}
             let editAction = UIAction(title: NSLocalizedString("Edit this line", comment: ""), image: UIImage(systemName: "pencil"), attributes: .destructive) {action in
                 self.performEdit(indexPath)}
