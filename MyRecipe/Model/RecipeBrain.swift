@@ -60,7 +60,6 @@ class RecipeBrain {
         ///Broadcasts ingredient array
         for delegate in delegates {
             delegate.didChangeIngredients(ingredients)
-            print("broadcasting ingredients")
         }
     }
     
@@ -68,8 +67,13 @@ class RecipeBrain {
         ///Broadcasts ingredient array
         for delegate in delegates {
             delegate.didChangeRecipes(recipes)
-            print("broadcase recipes")
         }
+    }
+    
+    func getRecipeAt(_ row: Int) {
+        recipe = recipes[row]
+        currentRecipeIndex = row
+        broadcastRecipe()
     }
 
     func getRecipeName() -> String {

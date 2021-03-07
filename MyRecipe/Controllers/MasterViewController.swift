@@ -8,7 +8,7 @@
 import UIKit
 
 
-class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate {
+class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, GetRecipeUpdates {
 
     @IBOutlet weak var fullScreenStack: UIStackView!
     @IBOutlet weak var rightScreenStack: UIStackView!
@@ -30,8 +30,9 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         recipeBrain.broadcastRecipe()
         
         // Delegates
-//        tableView.delegate = self
+        tableView.delegate = self
         recipeName.delegate = self
+        recipeBrain.addDelegate(self)
         
         // this instantiates the data source object for this tableview and provides the data source with the path to find the data
         ingredientListDataSource = IngredientListDataSource(tableView: tableView)
@@ -138,10 +139,22 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func performEdit(_ indexPath: IndexPath) {
         recipeBrain.setCurrentRecipeLine(indexPath: indexPath)
-        print("edit button pressed")
-//        delegate?.wantsToEditRecipeLine()
+        recipeLineAddMode = 1
+        performSegue(withIdentifier: "RecipeLineSegue", sender: self)
     }
-    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "RecipeLineSegue" {
+            let destinationVC = segue.destination as! RecipeLineController
+            if sender as! NSObject == self {
+                destinationVC.setAddMode(1)
+                
+            } else {
+                destinationVC.setAddMode(0)
+            }
+        }
+    }
+        
     // confirm delete line
     func alertOkCancel(title: String, message: String, indexPath: IndexPath) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -153,4 +166,10 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         present(alert, animated: true, completion: nil)
     }
 
+ // MARK: - Recipe Updates Delegate
+    func didChangeRecipe(_ recipe: Recipe) {
+        print("called with new recipe")
+        recipeName.text = recipe.name
+    }
+        
 }

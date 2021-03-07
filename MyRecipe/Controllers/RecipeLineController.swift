@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol RecipeLineDelegate {
-    func returnFromRecipeLine()
-    func getAddMode() -> Int
-}
-
 // Needs to know whether it is adding or editing an exiting line
 // Too tricky to create a custom init() so we are calling the delegate to tell us what we are
 class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates {
@@ -26,9 +21,8 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     var ingredients = [Ingredient]()
     var pickerList = [""]
     var listIndex = 0
-    var delegate: RecipeLineDelegate?
     var qty = 0.0
-    var addMode = 0 // 0 for adding, 1 for editing
+    var addMode = 0
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,12 +33,15 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         recipeBrain.addDelegate(self)
         ingredients = recipeBrain.ingredients
         makePickerList(list: listIndex)
-        askDelegateForMode()
+        adjustForMode()
     }
     
     // configure controller and interface for whether in add or edit mode
-    func askDelegateForMode() {
-        addMode = delegate?.getAddMode() ?? 0
+    func setAddMode(_ mode: Int) {
+        addMode = mode
+    }
+    
+    func adjustForMode() {
         if addMode == 0 {
             viewTitle.text = "Add a New Recipe Line"
             clearLine()
