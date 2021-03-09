@@ -10,14 +10,15 @@ import Foundation
 struct Recipe: Codable {
     var name: String
     var measure: Measurement<Unit>
-    var ingredientList: [RecipeLine]
+    var ingredientList: [[RecipeLine]]
+    var sectionList: [Section]
     
-    init(name: String, measure: Measurement<Unit>, ingredientList: [RecipeLine]) {
+    init(name: String, measure: Measurement<Unit>, ingredientList: [[RecipeLine]], sectionList: [Section]) {
         self.name = name
         self.measure = measure
         self.ingredientList = ingredientList
+        self.sectionList = sectionList
     }
-    
 }
 
 struct RecipeLine: Codable {
@@ -31,6 +32,10 @@ struct RecipeLine: Codable {
     
 }
 
+struct Section: Codable {
+    var name: String
+    var type: SectionType
+}
 
     
     

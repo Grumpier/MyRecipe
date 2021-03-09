@@ -1,5 +1,5 @@
 //
-//  UOM.swift
+//  Enumerators.swift
 //  MyRecipe
 //
 //  Created by Steven Manus on 03/03/21.
@@ -44,4 +44,25 @@ extension UOM: RawRepresentable {
         case .pounds: return UnitMass.pounds
         }
     }
+}
+
+enum IngredientType: String, Codable, CaseIterable {
+    case Flour
+    case Fluid
+    case Starter
+    case Salt
+    case Yeast
+    case Fat
+    case Sugar
+    case Dairy
+    case Egg
+    case Miscellaneous
+    case Other_extras
+}
+
+enum SectionType: String, Codable, CaseIterable {
+    case Dough
+    case PreFerment
+    case Soaker
+    case Miscellaneous
 }

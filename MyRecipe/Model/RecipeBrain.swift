@@ -23,6 +23,7 @@ extension GetRecipeUpdates {
 
 // Singleton to control all data updates and refreshes
 class RecipeBrain {
+    ///Master class for handling all data entry and retrieval
     static let singleton = RecipeBrain()
     
     var recipes: [Recipe] = []
@@ -30,11 +31,12 @@ class RecipeBrain {
     var delegates = [GetRecipeUpdates]()
     var currentRecipeLine: RecipeLine?
     var currentRecipeLineIndex = 0
+    // Note that sections are just integers - let TableView handling headings for each section group
+    var currentRecipeSection = 0
     var currentRecipeIndex = -1
-    var recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [])
+    var recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [[]], sectionList: [])
     
-    
-    // Directories for storing data objects
+ // MARK: - Directories for storing data objects
     let urlRecipes = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Recipes.plist")
 
     let urlIngredients = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Ingredients.plist")
@@ -43,7 +45,7 @@ class RecipeBrain {
 
     let defaults = UserDefaults.standard
     
-    // Delegate stuff for broadcasting to controllers
+ // MARK: - Delegate stuff for broadcasting data updates to controllers
     func addDelegate(_ delegate: GetRecipeUpdates){
         ///Registers a delegate of GetRecipeUpdates delegate protocol
         delegates.append(delegate)
@@ -70,12 +72,36 @@ class RecipeBrain {
         }
     }
     
+ // MARK: - Recipe set/get methods
     func getRecipeAt(_ row: Int) {
         recipe = recipes[row]
         currentRecipeIndex = row
         broadcastRecipe()
     }
-
+    
+    func getNumberOfSections() -> Int {
+        ///Returns the number of sections of the current recipe
+        return recipe.ingredientList.count
+    }
+    
+    func getNumberOfRowsInSection(section: Int) -> Int {
+        ///Section is an index.
+        if recipe.ingredientList.count > section {
+            return recipe.ingredientList[section].count
+        } else {
+            return 0
+        }
+    }
+    
+    func getSectionName(section: Int) -> String {
+        ///Section is an index
+        if recipe.sectionList.count > section {
+            return recipe.sectionList[section].name
+        } else {
+            return ""
+        }
+    }
+    
     func getRecipeName() -> String {
         return recipe.name
     }
@@ -86,37 +112,54 @@ class RecipeBrain {
         saveRecipe()
     }
     
-    func addIngredient(name: String, type: IngredientType.RawValue) {
-        /// Create a new ingredient and append to ingredients array. Broadcasts new array.
-        let ingredient = Ingredient(name: name, type: IngredientType(rawValue: type)!)
-        ingredients.append(ingredient)
-        broadcastIngredients()
-    }
-    
-    func getRecipeLine(indexPath: IndexPath) -> RecipeLine {
-        return recipe.ingredientList[indexPath.row]
+    func getRecipeLine(indexPath: IndexPath) -> RecipeLine? {
+        if recipe.ingredientList.count > indexPath.section {
+            return recipe.ingredientList[indexPath.section][indexPath.row]
+        } else {
+            return nil
+        }
     }
 
-    func getCurrentRecipeLine() -> RecipeLine {
+    func getCurrentRecipeLine() -> RecipeLine? {
         ///Returns curently active recipe line from ingredient list
-        return currentRecipeLine ?? recipe.ingredientList[0]
+        return currentRecipeLine
     }
     
     func setCurrentRecipeLine(indexPath: IndexPath) {
-        ///Sets current recipe line to the ingredient list entry at the passed index path row.
-        currentRecipeLineIndex = indexPath.row
-        currentRecipeLine = recipe.ingredientList[indexPath.row]
+        ///Sets current recipe line to the ingredient list entry at the passed index path section and row.
+        if recipe.sectionList.count > indexPath.section {
+            if recipe.ingredientList[indexPath.section].count > indexPath.row {
+                currentRecipeLineIndex = indexPath.row
+                currentRecipeSection = indexPath.section
+                currentRecipeLine = recipe.ingredientList[currentRecipeSection][currentRecipeLineIndex]
+            }
+        }
     }
     
-    func addRecipeLine(ingredientName: String, quantity: Double, uom: UOM) -> Int {
-        ///Receives receipe line components and validates before appending to ingredient list. Saves modified recipe and broadcasts. Return 0 for okay, 1 for bad ingredient, 2 for bad quantity.
+    func addEditSection(section: Int, sectionName: String, sectionType: SectionType.RawValue) -> Int {
+        /// Adds a new section or replaces section name and type if already exists. If section index is out of order, returns error code 1.
+        if recipe.sectionList.count < section {
+            return 1
+        } else if recipe.sectionList.count == section {
+            recipe.sectionList.append(Section(name: sectionName, type: SectionType(rawValue: sectionType)!))
+            recipe.ingredientList.append([])
+        } else {
+            recipe.sectionList[section].name = sectionName
+            recipe.sectionList[section].type = SectionType(rawValue: sectionType)!
+        }
+        return 0
+    }
+    
+    func addRecipeLine(section: Int, ingredientName: String, quantity: Double, uom: UOM) -> Int {
+        ///Receives receipe line components and validates before appending to ingredient list. Saves modified recipe and broadcasts. Return 0 for okay, 1 for bad ingredient, 2 for bad quantity, 3 for bad section.
         if quantity <= 0 {return 2}
         if !ingredients.map({ $0.name }).contains(ingredientName) {return 1}
-
+        if recipe.sectionList.count <= section {return 3}
+        
         // passed all tests add to recipe - make a recipeline from the data
         let thisIngredient = ingredients.filter({ $0.name == ingredientName }).first!
         let thisRecipeLine = RecipeLine(ingredient: thisIngredient, measure: Measurement<Unit>(value: quantity, unit: uom.rawValue))
-        recipe.ingredientList.append(thisRecipeLine)
+        recipe.ingredientList[section].append(thisRecipeLine)
         saveRecipe()
         broadcastRecipe()
         return 0
@@ -130,17 +173,22 @@ class RecipeBrain {
         // passed all tests - edit current recipe line
         let thisIngredient = ingredients.filter({ $0.name == ingredientName }).first!
         let thisRecipeLine = RecipeLine(ingredient: thisIngredient, measure: Measurement<Unit>(value: quantity, unit: uom.rawValue))
-        recipe.ingredientList[currentRecipeLineIndex] = thisRecipeLine
+        recipe.ingredientList[currentRecipeSection][currentRecipeLineIndex] = thisRecipeLine
+        currentRecipeLine = thisRecipeLine
         saveRecipe()
         broadcastRecipe()
         return 0
     }
 
-    func deleteRecipeLine(_ index: Int) {
+    func deleteRecipeLine(indexPath: IndexPath) {
         ///Deletes the entry in the ingredient list at the specified index. Save the modified recipe and broadcast to delegates.
-        recipe.ingredientList.remove(at: index)
-        saveRecipe()
-        broadcastRecipe()
+        if recipe.sectionList.count > indexPath.section {
+            if recipe.ingredientList[indexPath.section].count > indexPath.row {
+                recipe.ingredientList[indexPath.section].remove(at: indexPath.row)
+                saveRecipe()
+                broadcastRecipe()
+            }
+        }
     }
     
     func getRecipe(indexPath: IndexPath) -> Recipe {
@@ -157,16 +205,30 @@ class RecipeBrain {
         } else {
             recipes[currentRecipeIndex] = recipe
         }
+        writeRecipe()
+        writeRecipes()
         broadcastRecipes()
     }
         
     func newRecipe() {
         /// Creates and broadcasts to delegates an empty recipe object. Sets currentRecipeIndex to -1 to indicate current recipe is not in recipes array.
-        recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [])
+        recipe = Recipe(name: "", measure: Measurement<Unit>(value: 0, unit: UOM.grams.rawValue), ingredientList: [[]], sectionList: [])
         currentRecipeIndex = -1
         broadcastRecipe()
     }
+
     
+ // MARK: - Ingredient set/get methods
+    func addIngredient(name: String, type: IngredientType.RawValue) {
+        /// Create a new ingredient and append to ingredients array. Broadcasts new array.
+        let ingredient = Ingredient(name: name, type: IngredientType(rawValue: type)!)
+        ingredients.append(ingredient)
+        writeIngredients()
+        broadcastIngredients()
+    }
+    
+ // MARK: - Data storage methods
+
     func writeIngredients() {
         ///Write ingredients array to disk
         let encoder = PropertyListEncoder()
@@ -218,6 +280,7 @@ class RecipeBrain {
     
     func loadRecipe() {
         ///Reads current recipe from disk
+        print(urlRecipe)
         if let data = try? Data(contentsOf: urlRecipe!) {
             let decoder = PropertyListDecoder()
             do {

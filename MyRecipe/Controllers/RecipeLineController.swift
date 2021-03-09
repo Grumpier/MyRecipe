@@ -60,9 +60,9 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     func getLine() {
         let recipeLine = recipeBrain.getCurrentRecipeLine()
-        ingredient.text = recipeLine.ingredient.name
-        quantity.text = String(format: "%.3f", recipeLine.measure.value)
-        measure.text = recipeLine.measure.unit.symbol
+        ingredient.text = recipeLine!.ingredient.name
+        quantity.text = String(format: "%.3f", recipeLine!.measure.value)
+        measure.text = recipeLine!.measure.unit.symbol
         makePickerList(list: 0)
     }
     
@@ -84,7 +84,7 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         let ingredientName = ingredient.text ?? ""
         let qtyValue = Double(quantity.text ?? "0") ?? 0.0
         if addMode == 0 {
-            addResult = recipeBrain.addRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
+            addResult = recipeBrain.addRecipeLine(section: 0, ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
         } else if addMode == 1 {
             addResult = recipeBrain.editRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
         }
@@ -97,8 +97,7 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             return
         }
         clearLine()
-        self.dismiss(animated: true, completion: nil)
-//        delegate?.returnFromRecipeLine()
+        self.dismiss(animated: true, completion: nil   )
     }
 
     @IBAction func cancelPressed(_ selector: UIBarButtonItem) {
