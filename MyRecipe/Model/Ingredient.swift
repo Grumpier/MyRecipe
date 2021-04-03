@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Ingredient: Codable {
+struct Ingredient: Codable  {
     let name: String
-    let type: IngredientType
+    var type: IngredientType
     
     init(name: String, type: IngredientType) {
         self.name = name

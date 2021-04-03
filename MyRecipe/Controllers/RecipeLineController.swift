@@ -9,7 +9,7 @@ import UIKit
 
 // Needs to know whether it is adding or editing an exiting line
 // Too tricky to create a custom init() so we are calling the delegate to tell us what we are
-class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates {
+class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates, GetEggType {
     
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var ingredient: UITextField!
@@ -67,7 +67,7 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     @IBAction func savePressed(_ sender: UIBarButtonItem) {
-        var addResult = 0
+        /// Checks if all fields are entered. Checks if ingredient type requires an associated value. If so, calls a UIAlert with a closure that handles the captured variable from a textfield inside the alert and calls the saveLine function that completes the save. If not, the saveLine is just called.
         if quantity.text == nil  {
             alertMessage(title: "Quantity", message: "Please enter a quantity.")
             return
@@ -80,15 +80,49 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             alertMessage(title: "Measure", message: "Please select a unit of measure")
             return
         }
+        
         let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
         let ingredientName = ingredient.text ?? ""
         let qtyValue = Double(quantity.text ?? "0") ?? 0.0
-        if addMode == 0 {
-            addResult = recipeBrain.addRecipeLine(section: 0, ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
-        } else if addMode == 1 {
-            addResult = recipeBrain.editRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure)
+        if let thisType = recipeBrain.getIngredientType(name: ingredientName) {
+            switch thisType {
+            case .Starter:
+                getHydration {(hydration) in
+                    if let hydrationValue = Int(hydration!) {
+                        if self.recipeBrain.validHydration(hydrationValue) {
+                            let newType = IngredientType.Starter(hydration: hydrationValue)
+                            self.saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: newType)
+                        }
+                    } else {
+                    // THIS MESSAGE SHOULD COME FROM RECIPEBRAIN!!!!
+                    self.alertMessage(title: "Hydration", message: "Please enter a number between 1 and 100 with no other characters.")
+                    }
+                }
+            case .Egg:
+                performSegue(withIdentifier: "EggSegue", sender: self)
+            default:
+                saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: thisType)
+            }
+        } else {
+            print("Bad Ingredient")
         }
-        
+    }
+
+    @IBAction func cancelPressed(_ selector: UIBarButtonItem) {
+        clearLine()
+        view.endEditing(true)
+        ingredient.resignFirstResponder()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveLine(thisMeasure: UOM, ingredientName: String, qtyValue: Double, thisType: IngredientType){
+        var addResult = 0
+        if addMode == 0 {
+            addResult = recipeBrain.addRecipeLine(section: recipeBrain.getCurrentSection(), ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure, thisType: thisType)
+        } else if addMode == 1 {
+            addResult = recipeBrain.editRecipeLine(ingredientName: ingredientName, quantity: qtyValue, uom: thisMeasure, thisType: thisType)
+        }
+
         if addResult == 1 {
             alertMessage(title: "Ingredient", message: "Select a valid ingredient or Add a new one")
             return
@@ -97,35 +131,46 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             return
         }
         clearLine()
-        self.dismiss(animated: true, completion: nil   )
-    }
-
-    @IBAction func cancelPressed(_ selector: UIBarButtonItem) {
-        clearLine()
-        self.dismiss(animated: true, completion: nil)
-//        delegate?.returnFromRecipeLine()
+        view.endEditing(true)
+        ingredient.resignFirstResponder()
+        self.dismiss(animated: true, completion: { self.view.endEditing(true)}  )
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // code here for setting add mode for ingredient controller
-        if segue.identifier == "IngredientController" {
+        switch segue.identifier {
+        case "IngredientController":
             let ingredientController = segue.destination as! IngredientController
             ingredientController.addMode = 0
+        case "EggSegue":
+            let eggController = segue.destination as! EggController
+            eggController.delegate = self
+        default:
+            break
         }
     }
+    
+    func getEggType(_ type: EggType) {
+        let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
+        let ingredientName = ingredient.text ?? ""
+        let qtyValue = Double(quantity.text ?? "0") ?? 0.0
+        saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: IngredientType.Egg(type: type))
+    }
             
-    func textFieldDidBeginEditing(_ textField: UITextField){
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == ingredient {
             listIndex = 0
             makePickerList(list: listIndex)
             pickerList = pickerList.filter {$0.starts(with: textField.text!) }
             picker.reloadAllComponents()
+            return true
         } else if textField == measure {
+            textField.text = UnitMass.grams.symbol
             listIndex = 1
             makePickerList(list: listIndex)
-            measure.resignFirstResponder()
             picker.reloadAllComponents()
+            return false
         }
+        return true
     }
         
     func textFieldDidChangeSelection(_ textField: UITextField){
@@ -160,11 +205,14 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
    }
 
    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-       if listIndex == 0 {
-           ingredient.text = pickerList[row]
-       } else if listIndex == 1 {
-           measure.text = pickerList[row]
-       }
+        switch listIndex {
+        case 0:
+            ingredient.text = pickerList[row]
+        case 1:
+            measure.text = pickerList[row]
+        default:
+            break
+        }
    }
 
     func makePickerList(list: Int) {
@@ -191,5 +239,24 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         picker.reloadComponent(0)
     }
 
-}
+    // MARK: - Alert box for Hydration input
+    func getHydration(completion: @escaping (String?) -> Void) {
+        ///A completion handler is passed to this alert function which takes a string as input and runs through the save process.
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Specify hydration", message: "Enter a number between 0 and 100 to indicate the ratio of fluid/flour in this ingredient. For example, if there is an equal amount of fluid to flour, then enter '100'", preferredStyle: .alert)
 
+        let action = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
+            completion(textField.text)
+        })
+
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "0..100"
+            textField = alertTextField
+        }
+
+        alert.addAction(action)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+}

@@ -1,56 +1,59 @@
 //
-//  IngredientController.swift
+//  SectionController.swift
 //  MyRecipe
 //
-//  Created by Steven Manus on 06/03/21.
+//  Created by Steven Manus on 10/03/21.
 //
 
 import UIKit
 
-class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class SectionController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
-    @IBOutlet weak var ingredient: UITextField!
-    @IBOutlet weak var type: UITextField!
+    @IBOutlet weak var sectionName: UITextField!
+    @IBOutlet weak var sectionType: UITextField!
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var viewTitle: UILabel!
     
     let recipeBrain = RecipeBrain.singleton
-    var ingredients = [Ingredient]()
+    var sections = [Section]()
     var pickerList = [""]
     var addMode = 0 // 0 for adding, 1 for editing
-    var listIndex = 0 // 0 for ingredient type, 1 for ingredient
+    var listIndex = 0 // 0 for section type, 1 for section
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        ingredient.delegate = self
-        type.delegate = self
+        sectionName.delegate = self
+        sectionType.delegate = self
         picker.delegate = self
         picker.dataSource = self
-        ingredients = recipeBrain.ingredients
+        sections = recipeBrain.getSectionList()
         setMode()
     }
 
     // configure controller and interface for whether in add or edit mode
     func setMode() {
         if addMode == 0 {
-            viewTitle.text = "Create a New Ingredient"
+            viewTitle.text = "Create a New Section"
             makePickerList(list: 0)
         } else if addMode == 1 {
-            viewTitle.text = "Edit an Ingredient"
+            viewTitle.text = "Edit a Section"
             makePickerList(list: 1)
         }
     }
 
     @IBAction func save(_ sender: UIBarButtonItem) {
-        if (ingredient.text ?? "").isEmpty  {
-            alertMessage(title: "Ingredient", message: "Please enter an ingredient name.")
+        if (sectionName.text ?? "").isEmpty  {
+            alertMessage(title: "Section", message: "Please enter a section name.")
             return
         }
-        if (type.text ?? "").isEmpty {
-            alertMessage(title: "Ingredient Type", message: "Please select an ingredient type")
+        if (sectionType.text ?? "").isEmpty {
+            alertMessage(title: "Section Type", message: "Please select a section type")
             return
         }
-        recipeBrain.addIngredient(name: ingredient.text!.capitalized, type: type.text!)
+        let addResult = recipeBrain.addEditSection(section: sections.count, sectionName: sectionName.text!, sectionType: sectionType.text!)
+        if addResult == 1 {
+            print("Section index is out of bounds")
+        }
         view.endEditing(true)
         self.dismiss(animated: true, completion: nil)
     }
@@ -82,9 +85,9 @@ class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerView
 
    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
        if listIndex == 0 {
-           type.text = pickerList[row]
+           sectionType.text = pickerList[row]
        } else if listIndex == 1 {
-           ingredient.text = pickerList[row]
+           sectionName.text = pickerList[row]
        }
    }
 
@@ -92,13 +95,13 @@ class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerView
         switch list {
         case 1: do {
             self.pickerList = [""]
-            for ingredient in ingredients {
-                self.pickerList.append(ingredient.name)
+            for section in sections {
+                self.pickerList.append(section.name)
             }
         }
         case 0: do {
             self.pickerList = [""]
-            for type in IngredientType.allCases {
+            for type in SectionType.allCases {
                 self.pickerList.append(type.rawValue)
             }
         }
@@ -107,9 +110,10 @@ class IngredientController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == type {
-            return false
+        if textField == sectionType {
+            return false; //do not show keyboard nor cursor
         }
         return true
     }
+
 }

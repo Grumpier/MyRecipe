@@ -8,6 +8,7 @@
 import Foundation
 
 protocol ConfigurableCell {
-    associatedtype Object
-    func configure(object: Object)
+    associatedtype Object1
+    associatedtype Object2
+    func configure(object1: Object1, object2: Object2)
 }

@@ -16,17 +16,19 @@
 		740FFD7925BD9E1000A23384 /* RecipeBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7825BD9E1000A23384 /* RecipeBrain.swift */; };
 		740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7C25BD9E2200A23384 /* Recipe.swift */; };
 		740FFD8025BD9E6800A23384 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740FFD7F25BD9E6800A23384 /* Ingredient.swift */; };
+		74170FFA260CE93D001DC0A9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 74170FF9260CE93C001DC0A9 /* README.md */; };
 		7439AF7425EFC920008BAA20 /* Enumerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7439AF7325EFC920008BAA20 /* Enumerators.swift */; };
 		744CAB8E25EBE36F005DA757 /* IngredientListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB8D25EBE36F005DA757 /* IngredientListDataSource.swift */; };
 		744CAB9325EBF549005DA757 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9225EBF549005DA757 /* RecipeCell.swift */; };
 		744CAB9825EBF801005DA757 /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9725EBF801005DA757 /* ConfigurableCell.swift */; };
 		744CAB9C25EBF82B005DA757 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */; };
-		744CABA125EC0347005DA757 /* AddIngredientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CABA025EC0347005DA757 /* AddIngredientController.swift */; };
 		745BB4C825F4FBF800F7B8FB /* RecipeListTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745BB4C725F4FBF800F7B8FB /* RecipeListTableTableViewController.swift */; };
+		7491121D261763C600FCFACC /* EggController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7491121C261763C600FCFACC /* EggController.swift */; };
 		74AECD8625F3D299008CCA53 /* IngredientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AECD8525F3D299008CCA53 /* IngredientController.swift */; };
 		74E3A67325CC63090008CCCA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E3A67225CC63080008CCCA /* FileManager.swift */; };
 		74E52CD125EE579900FEE0D1 /* RecipeLineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */; };
 		74FD6A5025F7DB0500525422 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD6A4F25F7DB0500525422 /* HeaderTableViewCell.swift */; };
+		74FD6A5325F8E04A00525422 /* SectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FD6A5225F8E04900525422 /* SectionController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,17 +43,19 @@
 		740FFD7825BD9E1000A23384 /* RecipeBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBrain.swift; sourceTree = "<group>"; };
 		740FFD7C25BD9E2200A23384 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		740FFD7F25BD9E6800A23384 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		74170FF9260CE93C001DC0A9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7439AF7325EFC920008BAA20 /* Enumerators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerators.swift; sourceTree = "<group>"; };
 		744CAB8D25EBE36F005DA757 /* IngredientListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListDataSource.swift; sourceTree = "<group>"; };
 		744CAB9225EBF549005DA757 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		744CAB9725EBF801005DA757 /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
 		744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
-		744CABA025EC0347005DA757 /* AddIngredientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientController.swift; sourceTree = "<group>"; };
 		745BB4C725F4FBF800F7B8FB /* RecipeListTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListTableTableViewController.swift; sourceTree = "<group>"; };
+		7491121C261763C600FCFACC /* EggController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EggController.swift; path = MyRecipe/View/EggController.swift; sourceTree = SOURCE_ROOT; };
 		74AECD8525F3D299008CCA53 /* IngredientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientController.swift; sourceTree = "<group>"; };
 		74E3A67225CC63080008CCCA /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLineController.swift; sourceTree = "<group>"; };
 		74FD6A4F25F7DB0500525422 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
+		74FD6A5225F8E04900525422 /* SectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +72,7 @@
 		740FFD5125BD9D0800A23384 = {
 			isa = PBXGroup;
 			children = (
+				74170FF9260CE93C001DC0A9 /* README.md */,
 				740FFD5C25BD9D0800A23384 /* MyRecipe */,
 				740FFD5B25BD9D0800A23384 /* Products */,
 			);
@@ -110,10 +115,11 @@
 		740FFD7625BD9DBA00A23384 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7491121C261763C600FCFACC /* EggController.swift */,
 				74AECD8525F3D299008CCA53 /* IngredientController.swift */,
+				74FD6A5225F8E04900525422 /* SectionController.swift */,
 				74E52CD025EE579900FEE0D1 /* RecipeLineController.swift */,
 				740FFD6125BD9D0800A23384 /* MasterViewController.swift */,
-				744CABA025EC0347005DA757 /* AddIngredientController.swift */,
 				745BB4C725F4FBF800F7B8FB /* RecipeListTableTableViewController.swift */,
 			);
 			path = Controllers;
@@ -224,6 +230,7 @@
 			files = (
 				740FFD6A25BD9D0E00A23384 /* LaunchScreen.storyboard in Resources */,
 				740FFD6725BD9D0E00A23384 /* Assets.xcassets in Resources */,
+				74170FFA260CE93D001DC0A9 /* README.md in Resources */,
 				740FFD6525BD9D0800A23384 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,10 +243,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				74E52CD125EE579900FEE0D1 /* RecipeLineController.swift in Sources */,
-				744CABA125EC0347005DA757 /* AddIngredientController.swift in Sources */,
 				740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */,
 				740FFD7925BD9E1000A23384 /* RecipeBrain.swift in Sources */,
 				7439AF7425EFC920008BAA20 /* Enumerators.swift in Sources */,
+				74FD6A5325F8E04A00525422 /* SectionController.swift in Sources */,
 				744CAB8E25EBE36F005DA757 /* IngredientListDataSource.swift in Sources */,
 				740FFD6225BD9D0800A23384 /* MasterViewController.swift in Sources */,
 				744CAB9C25EBF82B005DA757 /* ReusableIdentifier.swift in Sources */,
@@ -252,6 +259,7 @@
 				74FD6A5025F7DB0500525422 /* HeaderTableViewCell.swift in Sources */,
 				745BB4C825F4FBF800F7B8FB /* RecipeListTableTableViewController.swift in Sources */,
 				74AECD8625F3D299008CCA53 /* IngredientController.swift in Sources */,
+				7491121D261763C600FCFACC /* EggController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
