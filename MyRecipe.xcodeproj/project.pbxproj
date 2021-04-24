@@ -23,6 +23,7 @@
 		744CAB9825EBF801005DA757 /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9725EBF801005DA757 /* ConfigurableCell.swift */; };
 		744CAB9C25EBF82B005DA757 /* ReusableIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */; };
 		745BB4C825F4FBF800F7B8FB /* RecipeListTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745BB4C725F4FBF800F7B8FB /* RecipeListTableTableViewController.swift */; };
+		746D7DDB261F416300F393B7 /* DairyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D7DDA261F416300F393B7 /* DairyController.swift */; };
 		7491121D261763C600FCFACC /* EggController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7491121C261763C600FCFACC /* EggController.swift */; };
 		74AECD8625F3D299008CCA53 /* IngredientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AECD8525F3D299008CCA53 /* IngredientController.swift */; };
 		74E3A67325CC63090008CCCA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E3A67225CC63080008CCCA /* FileManager.swift */; };
@@ -50,6 +51,7 @@
 		744CAB9725EBF801005DA757 /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
 		744CAB9B25EBF82B005DA757 /* ReusableIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifier.swift; sourceTree = "<group>"; };
 		745BB4C725F4FBF800F7B8FB /* RecipeListTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListTableTableViewController.swift; sourceTree = "<group>"; };
+		746D7DDA261F416300F393B7 /* DairyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DairyController.swift; path = MyRecipe/View/DairyController.swift; sourceTree = SOURCE_ROOT; };
 		7491121C261763C600FCFACC /* EggController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EggController.swift; path = MyRecipe/View/EggController.swift; sourceTree = SOURCE_ROOT; };
 		74AECD8525F3D299008CCA53 /* IngredientController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientController.swift; sourceTree = "<group>"; };
 		74E3A67225CC63080008CCCA /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		740FFD7625BD9DBA00A23384 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				746D7DDA261F416300F393B7 /* DairyController.swift */,
 				7491121C261763C600FCFACC /* EggController.swift */,
 				74AECD8525F3D299008CCA53 /* IngredientController.swift */,
 				74FD6A5225F8E04900525422 /* SectionController.swift */,
@@ -246,6 +249,7 @@
 				740FFD7D25BD9E2200A23384 /* Recipe.swift in Sources */,
 				740FFD7925BD9E1000A23384 /* RecipeBrain.swift in Sources */,
 				7439AF7425EFC920008BAA20 /* Enumerators.swift in Sources */,
+				746D7DDB261F416300F393B7 /* DairyController.swift in Sources */,
 				74FD6A5325F8E04A00525422 /* SectionController.swift in Sources */,
 				744CAB8E25EBE36F005DA757 /* IngredientListDataSource.swift in Sources */,
 				740FFD6225BD9D0800A23384 /* MasterViewController.swift in Sources */,

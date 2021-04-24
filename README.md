@@ -15,21 +15,16 @@ The total box shows:
     show starter as ?????
     innoculation: starter weight/non-starter flour weight
     hydration: fluid weight/flour weight
+
+Original program issues/questions:
+    Soaker section is not supposed to affect hydration but if Dairy is added to Soaker, it DOES change the hyrdation.  THIS PROGRAM IS FOLLOWING THIS LOGIC.
+    If a recipe contains both Fluid and Dairy, when using Hydration scaling only the first of these ingredients is scaled to reach the target hydration. i.e. if fluid is before dairy than only the fluid quantity is changed and vice-versa. THIS PROGRAM IS ADJUSTING BOTH DAIRY AND FLUID IN PROPORTION TO THEIR ORIGINAL WEIGHT TO HIT TARGET HYDRATION.
     
+
+
 PROGRAMMING TO DO
-Problem - sometimes when adding a new recipe the prior recipe is getting overwritten - might be that using -1 for recipe index for a new recipe is the problem - is -1 the Swift index for last item???
+Ship with sample ingredients? Need user default flag to show first time install so that hard-coded ingredients are written only once.
 
- Also allow drag up and down to reorder recipe lines.
-
-Delete an ingredient
-
-Delete a section
-
-Alphabetize ingredients in recipe line picker
-
-In add new ingredient, if ingredient name is empty and type is selected, copy type name to ingredient name
-
-Try creating a new integer type called Fat (and any other properties that are used by calculator) to enable identifying the fat properties of any ingredient in a recipe list. Calculator functions can then search for all ingredients with properties of this type to total up fat content.
 
 
 
