@@ -36,7 +36,15 @@ extension IngredientListDataSource: UITableViewDataSource {
         configure(cell: cell, indexPath: indexPath)
         return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt from: IndexPath, to: IndexPath) {
+        recipeBrain.moveRecipeLine(from: from, to: to)
+    }
+        
     private func configure(cell: UITableViewCell, indexPath: IndexPath) {
         if let cell = cell as? RecipeCell {
             if let object1 = recipeBrain.getRecipeLine(indexPath: indexPath){

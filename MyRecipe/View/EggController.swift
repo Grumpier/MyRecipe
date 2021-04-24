@@ -7,22 +7,18 @@
 
 import UIKit
 
-protocol GetEggType {
-    func getEggType(_ type: EggType)
-}
-
 class EggController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
     @IBOutlet weak var eggType: UITextField!
     @IBOutlet weak var picker: UIPickerView!
     
-    var delegate: GetEggType?
+    var completionHandler: ((EggType) -> Void)?
     
     var pickerList: [String] {
         let eggs = EggType.allCases
         var eggList = [""]
         for egg in eggs {
-            eggList.append(egg.name)
+            eggList.append(egg.rawValue)
         }
         return eggList
     }
@@ -35,10 +31,11 @@ class EggController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
 
     @IBAction func save(_ sender: UIBarButtonItem) {
-        let thisEgg = EggType.allCases.filter({ $0.name == eggType.text }).first!
-        view.endEditing(true)
-        self.dismiss(animated: true, completion: nil)
-        delegate?.getEggType(thisEgg)
+        if let thisEgg = EggType(rawValue: eggType.text!) {
+            view.endEditing(true)
+            self.dismiss(animated: true, completion: nil)
+            completionHandler?(thisEgg)
+        }
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {

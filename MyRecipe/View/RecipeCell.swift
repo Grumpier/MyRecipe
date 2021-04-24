@@ -23,6 +23,8 @@ extension RecipeCell: ConfigurableCell {
         case .Starter(let hydration):
             caption = String(" (\(hydration)% hydration)") + caption
         case .Egg(let type):
+            caption = String(" (\(type.rawValue))") + caption
+        case .Dairy(let type):
             caption = String(" (\(type.name))") + caption
         default:
             break

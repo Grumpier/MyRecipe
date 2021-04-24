@@ -9,7 +9,7 @@ import UIKit
 
 // Needs to know whether it is adding or editing an exiting line
 // Too tricky to create a custom init() so we are calling the delegate to tell us what we are
-class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates, GetEggType {
+class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, GetRecipeUpdates {
     
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var ingredient: UITextField!
@@ -23,10 +23,16 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     var listIndex = 0
     var qty = 0.0
     var addMode = 0
-        
+    
+//    override var disablesAutomaticKeyboardDismissal: Bool {
+//        get { return false } // or false
+//        set { }
+//    }
+                
     override func viewDidLoad() {
         super.viewDidLoad()
         ingredient.delegate = self
+        quantity.delegate = self
         measure.delegate = self
         picker.delegate = self
         picker.dataSource = self
@@ -34,6 +40,8 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         ingredients = recipeBrain.ingredients
         makePickerList(list: listIndex)
         adjustForMode()
+        ingredient.keyboardType = .default
+        quantity.keyboardType = .numberPad
     }
     
     // configure controller and interface for whether in add or edit mode
@@ -100,6 +108,8 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
                 }
             case .Egg:
                 performSegue(withIdentifier: "EggSegue", sender: self)
+            case .Dairy:
+                performSegue(withIdentifier: "DairySegue", sender: self)
             default:
                 saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: thisType)
             }
@@ -114,6 +124,15 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         ingredient.resignFirstResponder()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func addPressed(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "IngredientSegue", sender: "Add")
+    }
+    
+    @IBAction func editPressed(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "IngredientSegue", sender: "Edit")
+    }
+    
     
     func saveLine(thisMeasure: UOM, ingredientName: String, qtyValue: Double, thisType: IngredientType){
         var addResult = 0
@@ -138,23 +157,35 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "IngredientController":
+        case "IngredientSegue":
             let ingredientController = segue.destination as! IngredientController
-            ingredientController.addMode = 0
+            if sender as! String == "Add" {
+                ingredientController.ingredientName = ingredient.text?.capitalized ?? ""
+                ingredientController.addMode = 0
+            } else {
+                ingredientController.addMode = 1
+            }
         case "EggSegue":
             let eggController = segue.destination as! EggController
-            eggController.delegate = self
+            let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
+            let ingredientName = ingredient.text ?? ""
+            let qtyValue = Double(quantity.text ?? "0") ?? 0.0
+            eggController.completionHandler = { [weak self] type in
+                self?.saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: IngredientType.Egg(type: type))
+            }
+        case "DairySegue":
+            let dairyController = segue.destination as! DairyController
+            let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
+            let ingredientName = ingredient.text ?? ""
+            let qtyValue = Double(quantity.text ?? "0") ?? 0.0
+            dairyController.completionHandler = { [weak self] type in
+                self?.saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: IngredientType.Dairy(type: type))
+            }
         default:
             break
         }
     }
     
-    func getEggType(_ type: EggType) {
-        let thisMeasure = (UOM.allCases.filter({ $0.rawValue.symbol == measure.text }).first)!
-        let ingredientName = ingredient.text ?? ""
-        let qtyValue = Double(quantity.text ?? "0") ?? 0.0
-        saveLine(thisMeasure: thisMeasure, ingredientName: ingredientName, qtyValue: qtyValue, thisType: IngredientType.Egg(type: type))
-    }
             
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == ingredient {
@@ -168,6 +199,8 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             listIndex = 1
             makePickerList(list: listIndex)
             picker.reloadAllComponents()
+            picker.selectRow(pickerList.firstIndex(where: {$0 == UnitMass.grams.symbol})!, inComponent: 0, animated: true)
+            quantity.resignFirstResponder()
             return false
         }
         return true
@@ -178,13 +211,28 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             listIndex = 0
             makePickerList(list: listIndex)
             pickerList = pickerList.filter {$0.starts(with: textField.text!.capitalized) }
-            if pickerList.count == 0 {
-                pickerList.append(" ") // to allow user to selecte from picker - IOS doesn't detect keypress on picker without movement
-            }
             picker.reloadAllComponents()
         }
     }
     
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField == ingredient && pickerList.count == 0 {
+            textField.resignFirstResponder()
+            performSegue(withIdentifier: "IngredientSegue", sender: "Add")
+        }
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == ingredient && pickerList.count == 0 {
+            textField.resignFirstResponder()
+            performSegue(withIdentifier: "IngredientSegue", sender: "Add")
+        }
+        textField.resignFirstResponder()
+        return true
+    }
+
     func alertMessage(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -214,13 +262,15 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
             break
         }
    }
-
+    
+    
     func makePickerList(list: Int) {
         switch list {
         case 0: do {
             self.pickerList = [""]
             for ingredient in ingredients {
                 self.pickerList.append(ingredient.name)
+                pickerList.sort()
             }
         }
         case 1: do {
@@ -250,8 +300,9 @@ class RecipeLineController: UIViewController, UIPickerViewDelegate, UIPickerView
         })
 
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "0..100"
+            alertTextField.text = "100"
             textField = alertTextField
+            textField.keyboardType = .numberPad
         }
 
         alert.addAction(action)

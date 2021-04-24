@@ -10,8 +10,6 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
@@ -32,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let recipeBrain = RecipeBrain.singleton
         recipeBrain.writeRecipes()
         recipeBrain.writeIngredients()
-        recipeBrain.writeRecipe()
-        recipeBrain.writeCurrentRecipeIndex()
+//        recipeBrain.writeRecipe()
+//        recipeBrain.writeCurrentRecipeIndex()
     }
     
 

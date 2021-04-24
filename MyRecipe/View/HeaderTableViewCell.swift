@@ -8,13 +8,17 @@
 import UIKit
 
 class HeaderTableViewCell: UITableViewCell, ReusableIdentifier {
-    var tapAction: ((UITableViewCell) -> Void)?
+    var newLine: ((UITableViewCell) -> Void)?
+    var editHeader: ((UITableViewCell) -> Void)?
     
     @IBOutlet weak var sectionName: UILabel!
     @IBAction func addIngredientPressed(_ sender: UIButton) {
-        tapAction?(self)
+        newLine?(self)
     }
     
+    @IBAction func editTouched(_ sender: UIButton) {
+        editHeader?(self)
+    }
     
     
 }

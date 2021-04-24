@@ -8,13 +8,24 @@
 import Foundation
 
 struct Ingredient: Codable  {
-    let name: String
+    var name: String
     var type: IngredientType
     
     init(name: String, type: IngredientType) {
         self.name = name
         self.type = type
     }
-        
+}
+
+struct DairyItem: Codable {
+    let name: String
+    var protein: Double
+    var fat: Double
+    var carbs: Double
+    var ash: Double
+    var salt: Double
+    var hydration: Double {
+        return 100.0 - (protein + fat + carbs + ash + salt)
+    }
 }
 

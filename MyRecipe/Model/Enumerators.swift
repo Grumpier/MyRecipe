@@ -47,19 +47,57 @@ enum IngredientType {
     case Yeast
     case Fat
     case Sugar
-    case Dairy
+    case Dairy(type: DairyItem = DairyType.whole.defaults())
     case Egg(type: EggType)
     case Miscellaneous
-    case Other_extras
+    case OtherExtras
     
-    func hydration() -> Int? {
+    func hydration() -> Int {
       switch self {
       case .Starter(let value):
         return value
       default:
-        return nil
+        return 0
       }
     }
+
+    func fluid() -> Double {
+        switch self {
+        case .Fluid:
+            return 1.0
+        case .Egg(let value):
+            return value.fluid
+        case .Dairy(let value):
+            return value.hydration / 100
+        default:
+            return 0.0
+        }
+    }
+    
+    func fat() -> Double {
+      switch self {
+      case .Fat:
+        return 1.0
+      case .Egg(let value):
+        return value.fat
+      case .Dairy(let value):
+        return value.fat / 100
+      default:
+        return 0.0
+      }
+    }
+    
+    func salt() -> Double {
+        switch self {
+        case .Salt:
+            return 1.0
+        case .Dairy(let value):
+            return value.salt / 100
+        default:
+            return 0.0
+        }
+    }
+
 }
 
 extension IngredientType: Codable {
@@ -75,7 +113,7 @@ extension IngredientType: Codable {
         case Dairy
         case Egg
         case Miscellaneous
-        case Other_extras
+        case OtherExtras
     }
 
     enum IngredientTypeCodingError: Error {
@@ -113,8 +151,8 @@ extension IngredientType: Codable {
             self = .Sugar
             return
         }
-        if (try? values.decode(String.self, forKey: .Dairy)) != nil {
-            self = .Dairy
+        if let value = try? values.decode(DairyItem.self, forKey: .Dairy) {
+            self = .Dairy(type: value)
             return
         }
         if let value = try? values.decode(EggType.self, forKey: .Egg) {
@@ -125,8 +163,8 @@ extension IngredientType: Codable {
             self = .Miscellaneous
             return
         }
-        if (try? values.decode(String.self, forKey: .Other_extras)) != nil {
-            self = .Other_extras
+        if (try? values.decode(String.self, forKey: .OtherExtras)) != nil {
+            self = .OtherExtras
             return
         }
 
@@ -140,6 +178,8 @@ extension IngredientType: Codable {
             try container.encode(hydration, forKey: .Starter)
         case .Egg(let type):
             try container.encode(type, forKey: .Egg)
+        case .Dairy(let type):
+            try container.encode(type, forKey: .Dairy)
         default:
             try container.encode("", forKey: IngredientType.CodingKeys(rawValue: self.rawValue)!)
         }
@@ -156,10 +196,10 @@ extension IngredientType: RawRepresentable {
         case "Yeast": self = .Yeast
         case "Fat": self = .Fat
         case "Sugar": self = .Sugar
-        case "Dairy": self = .Dairy
+        case "Dairy": self = .Dairy(type: DairyType.whole.defaults())
         case "Egg": self = .Egg(type: .whole)
         case "Miscellaneous": self = .Miscellaneous
-        case "Other extras" : self = .Other_extras
+        case "OtherExtras": self = .OtherExtras
         default: self = .Miscellaneous
         }
     }
@@ -176,31 +216,98 @@ extension IngredientType: RawRepresentable {
         case .Dairy: return "Dairy"
         case .Egg: return "Egg"
         case .Miscellaneous: return "Miscellaneous"
-        case .Other_extras: return "Other extras"
+        case .OtherExtras: return "OtherExtras"
         }
     }
 }
 
 extension IngredientType: CaseIterable {
-    static var allCases: [IngredientType] = [Flour, Fluid, Starter(hydration: 100), Salt, Yeast, Fat, Sugar, Dairy, Egg(type: .whole), Miscellaneous, Other_extras]
+    static var allCases: [IngredientType] = [Flour, Fluid, Starter(hydration: 100), Salt, Yeast, Fat, Sugar, Dairy(type: DairyType.whole.defaults()), Egg(type: .whole), Miscellaneous, OtherExtras]
 }
 
 
-enum EggType: Int, CaseIterable, Codable {
-    /// Maps type of egg to the fat content as a percent
-    case whole = 2
-    case yolk = 3
-    case white = 1
-    
-    var name: String {
+enum EggType: String, CaseIterable, Codable {
+    case whole
+    case yolk
+    case white
+
+    var fat: Double {
         switch self {
-        case .whole: return "whole"
-        case .yolk: return "yolk"
-        case .white: return "white"
+        case .whole: return 0.11
+        case .yolk: return 0.33
+        case .white: return 0.0
         }
     }
-        
+    
+    var fluid: Double {
+        switch self {
+        case .whole: return 0.75
+        case .yolk: return 0.49
+        case .white: return 0.89
+        }
+    }
 }
+
+enum DairyType: String, CaseIterable {
+    case skim01 = "Skim milk (0.1%)"
+    case skim03 = "Skim milk (0.3%)"
+    case skim05 = "Skim milk (0.5%)"
+    case low = "Low fat milk (1.0%)"
+    case reduced = "Reduced fat milk (2.0%)"
+    case whole = "Whole milk (3.5%)"
+    case cream09 = "Cream (9%)"
+    case cream12 = "Cream (12%)"
+    case cream20 = "Cream (20%)"
+    case cream33 = "Cream (33%)"
+    case cream38 = "Cream (38%)"
+    case cream50 = "Cream (50%)"
+    case yogurt36 = "Yoghurt (3.6%)"
+    case yoghurt = "Yoghurt (0.1%)"
+    case butterSalt = "Butter, salted"
+    case butter = "Butter, unsalted"
+    case undefined = "undefined"
+
+    
+    func defaults() -> DairyItem {
+        switch self {
+        case .skim01:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 0.1, carbs: 4.7, ash: 0.7, salt: 0.0)
+        case .skim03:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 0.3, carbs: 4.7, ash: 0.7, salt: 0.0)
+        case .skim05:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 0.5, carbs: 4.7, ash: 0.7, salt: 0.0)
+        case .low:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 1.0, carbs: 4.9, ash: 0.7, salt: 0.0)
+        case .reduced:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 2.0, carbs: 4.9, ash: 0.7, salt: 0.0)
+        case .whole:
+            return DairyItem(name: self.rawValue, protein: 3.5, fat: 3.5, carbs: 4.8, ash: 0.7, salt: 0.0)
+        case .cream09:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 9.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .cream12:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 12.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .cream20:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 20.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .cream33:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 33.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .cream38:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 38.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .cream50:
+            return DairyItem(name: self.rawValue, protein: 2.1, fat: 50.0, carbs: 3.2, ash: 0.5, salt: 0.0)
+        case .yogurt36:
+            return DairyItem(name: self.rawValue, protein: 3.8, fat: 3.6, carbs: 3.8, ash: 0.8, salt: 0.0)
+        case .yoghurt:
+            return DairyItem(name: self.rawValue, protein: 3.8, fat: 0.1, carbs: 3.8, ash: 0.8, salt: 0.0)
+        case .butterSalt:
+            return DairyItem(name: self.rawValue, protein: 0.5, fat: 81.4, carbs: 0.6, ash: 1.0, salt: 1.2)
+        case .butter:
+            return DairyItem(name: self.rawValue, protein: 0.5, fat: 81.4, carbs: 0.6, ash: 1.0, salt: 0.0)
+        case .undefined:
+            return DairyItem(name: "undefined", protein: 0.0, fat: 0.0, carbs: 0.0, ash: 0.0, salt: 0.0)
+        }
+    }
+}
+
 
 enum SectionType: String, Codable, CaseIterable {
     case Dough
