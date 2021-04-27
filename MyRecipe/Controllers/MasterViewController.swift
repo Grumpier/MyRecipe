@@ -21,6 +21,7 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     @IBOutlet weak var recipeName: UITextField!
     @IBOutlet weak var qty: UITextField!
     @IBOutlet weak var notes: UITextView!
+    @IBOutlet weak var stepper: UIStepper!
     
     @IBOutlet weak var tableView: UITableView!
  
@@ -438,6 +439,7 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     func didChangeRecipe(_ recipe: Recipe) {
         recipeName.text = recipe.name
         qty.text = String(format: "%.1f", recipe.qty)
+        stepper.value = recipe.qty * 10
         notes.text = recipe.notes
         
         // Update Totals Section
@@ -457,16 +459,16 @@ class MasterViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         } else {
             totalInnoculationHeight.constant = 0
         }
-        totalSalt.text = String("\(Int(round(recipe.totalSalt)))g (") + String(recipe.flourWeight > 0 ? Int(round(100 * recipe.totalSalt / recipe.flourWeight)) : 100) + "%) "
+        totalSalt.text = String("\(Int(round(recipe.totalSalt)))g (") + String(recipe.totalFlour > 0 ? Int(round(100 * recipe.totalSalt / recipe.totalFlour)) : 100) + "%) "
         totalDoughHydration.text = String("\(recipe.hydrationPercent)% ")
-        if recipe.totalFat > 0 && recipe.flourWeight > 0 {
-            totalFat.text = String("\(Int(round(100 * recipe.totalFat / recipe.flourWeight)))% ")
+        if recipe.totalFat > 0 && recipe.totalFlour > 0 {
+            totalFat.text = String("\(Int(round(100 * recipe.totalFat / recipe.totalFlour)))% ")
             totalFatHeight.constant = 30
         } else {
             totalFatHeight.constant = 0
         }
-        if recipe.totalSugar > 0 && recipe.flourWeight > 0 {
-            totalSugar.text = String("\(Int(round(100 * recipe.totalSugar / recipe.flourWeight)))% ")
+        if recipe.totalSugar > 0 && recipe.totalFlour > 0 {
+            totalSugar.text = String("\(Int(round(100 * recipe.totalSugar / recipe.totalFlour)))% ")
             totalSugarHeight.constant = 30
         } else {
             totalSugarHeight.constant = 0

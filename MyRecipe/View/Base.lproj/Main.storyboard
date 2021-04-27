@@ -716,6 +716,7 @@
                         <outlet property="recipeName" destination="Fdh-ze-UFE" id="dP8-VU-XtW"/>
                         <outlet property="saltConstraintSwitch" destination="ilh-rW-Nn4" id="Qfk-xz-CTD"/>
                         <outlet property="saltConstraintValue" destination="EsT-vE-yy4" id="u9J-EY-Lgj"/>
+                        <outlet property="stepper" destination="UTf-Qe-Wvf" id="ElD-0x-j9l"/>
                         <outlet property="tableView" destination="GFP-DG-Pc7" id="TbB-dJ-sUM"/>
                         <outlet property="tangzhongButton" destination="uWD-KE-Z9U" id="kEj-NE-pDc"/>
                         <outlet property="totalButton" destination="gdK-2I-oTa" id="he5-h2-uDk"/>
